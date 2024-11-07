@@ -1,0 +1,243 @@
+<div mat-dialog-title>
+  <mat-toolbar role="toolbar" class="dialog-header">
+    <span class="title"> Donation Pick-up Request Details </span>
+    <button class="close" [mat-dialog-close]="false" mat-button>
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar>
+</div>
+<div mat-dialog-content>
+  <!-- CONTENT -->
+  <div class="row justify-content-between">
+    <div class="col-sm-6 py-3">
+      <div class= "view-status" [ngClass]="data.details.refNo.request === 'Request' ? 'request' :
+                    data.details.refNo.request === 'Approved' ? 'approved' :
+                    data.details.refNo.request === 'Complete' ? 'complete' :
+                    data.details.refNo.request === 'Issues' ? 'issues' : ''">
+      <span>
+        {{data.details.refNo.request}}
+      </span>
+      </div>
+      <!-- PICK UP SCHEDULE -->
+      <div class="view-container-text mt-3">
+        <p class="p-0 mb-2 text-uppercase">
+          PICK-UP SCHEDULE
+        </p>
+        <div class="px-3">
+          <div class="pickup-content-text">
+            {{data.details.pickupDay.date}}
+            <p>
+              {{data.details.pickupDay.schedule}}
+            </p>
+          </div>
+
+          <div class="text-details">
+            <div class="text-title">
+              Remarks
+            </div>
+            <div class="text-value">
+              N/A
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- DONATION DETAILS -->
+      <div class="view-container-text mt-3">
+        <p class="p-0 mb-2 text-uppercase">
+          DONATION DETAILS
+        </p>
+        <div class="row justify-content-between col-sm-12">
+          <div class="col-sm-6">
+            <div class="text-details">
+              <div class="text-title">
+                Name
+              </div>
+              <div class="text-value">
+                {{data.details.donor.fullname}}
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="text-details">
+              <div class="text-title">
+                Group/Company
+              </div>
+              <div class="text-value">
+                Company Inc
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-between col-sm-12">
+          <div class="col-sm-6">
+            <div class="text-details">
+              <div class="text-title">
+                Contact Number
+              </div>
+              <div class="text-value">
+                {{data.details.donor.contact}}
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="text-details">
+              <div class="text-title">
+                Email
+              </div>
+              <div class="text-value">
+                {{data.details.donor.email}}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="px-3">
+          <div class="text-details">
+            <div class="text-title">
+              Pick-up Location address
+            </div>
+            <div class="text-value">
+              {{data.details.pickupLocation.address}}
+            </div>
+          </div>
+        </div>
+        <div class="px-3">
+          <div class="text-details">
+            <div class="text-title">
+              Landmark
+            </div>
+            <div class="text-value">
+              Brown Gate
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- RECIPIENT DETAILS -->
+      <div class="view-container-text mt-3">
+        <p class="p-0 mb-2 text-uppercase">
+          RECIPIENT DETAILS
+        </p>
+        <div class="row justify-content-between col-sm-12">
+          <div class="col-sm-6">
+            <div class="text-details">
+              <div class="text-title">
+                Name
+              </div>
+              <div class="text-value">
+                {{data.details.recipient.fullname}}
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="text-details">
+              <div class="text-title">
+                Institution
+              </div>
+              <div class="text-value">
+                Institution Inc.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="px-3">
+          <div class="text-details">
+            <div class="text-title">
+              Contact Number
+            </div>
+            <div class="text-value">
+              {{data.details.recipient.contact}}
+            </div>
+          </div>
+        </div>
+        <div class="px-3">
+          <div class="text-details">
+            <div class="text-title">
+              Drop-off Location address
+            </div>
+            <div class="text-value">
+              {{data.details.dropoffLocation.address}}
+            </div>
+          </div>
+        </div>
+        <div class="px-3">
+          <div class="text-details">
+            <div class="text-title">
+              Landmark
+            </div>
+            <div class="text-value">
+              Hospital has light green paint
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- DIVIDER -->
+    <div class="divider" fxShow="true" fxHide.lt-sm="true"></div>
+    <!-- DONOR LIST BREAKDOWN DETAILS -->
+    <div class="col-sm-5 py-3">
+      <div class="view-container-text mt-3">
+        <p class="p-0 mb-2 text-uppercase">
+          DONATION LIST BREAKDOWN
+        </p>
+        <div class="px-3">
+          <div class="mb-4">
+            <mat-table [dataSource]="dataSource">
+              <!-- Item Column -->
+              <ng-container matColumnDef="name">
+                <mat-header-cell  *matHeaderCellDef> Item name </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+              </ng-container>
+
+              <!-- Quantity Column -->
+              <ng-container matColumnDef="qty">
+                <mat-header-cell  *matHeaderCellDef> Qty </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.qty}} </mat-cell>
+              </ng-container>
+
+
+              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+          </div>
+          <div class="text-details mt-2">
+            <div class="text-title">
+              TOTAL ESTIMATED WEIGHT
+            </div>
+            <div class="text-value">
+              {{data.details.estimatedWeight}}
+            </div>
+          </div>
+          <div>
+            <img src="http://techprint.co.za/onestore/image/cache/catalog/stamps/sample-700x700.jpg" class="img-fluid">
+          </div>
+          <div class="text-details mt-2">
+            <div class="text-title">
+              REMARKS ABOUT DONATION
+            </div>
+            <div class="text-value">
+              Please handle with care
+            </div>
+          </div>
+          <div class="text-details mt-2">
+            <div class="text-title">
+              OTHER NOTES
+            </div>
+            <div class="text-value">
+              N/A
+            </div>
+          </div>
+          <div class="view-action">
+            <button mat-button matTooltip="Actions" [matMenuTriggerFor]="menu">
+              SELECT ACTION
+              <mat-icon>keyboard_arrow_down</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="selectedConfirmationAction(data.details, action)" *ngFor="let action of actionOptions" >
+                {{ action.label }}
+              </button>
+            </mat-menu>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

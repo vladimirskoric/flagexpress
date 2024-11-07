@@ -1,0 +1,49 @@
+<div mat-dialog-title>
+  <mat-toolbar role="toolbar" class="dialog-header">
+    <span class="title"> Donation Pick-up Request Details </span>
+    <button class="close" [mat-dialog-close]="false" mat-button>
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar>
+</div>
+<div mat-dialog-content>
+  <!-- CONTENT -->
+  <div class="d-flex flex-column mx-auto content-container page-content h-100">
+    <div class="title">
+      DELIVERY COMPLETE
+    </div>
+    <form [formGroup]="deliveryForm" (ngSubmit)="submit()" class="page-container m-4 px-3 pb-4 mx-auto">
+      <!-- DELIVERY DATE FIELD -->
+      <div class="form-group row align-items-center">
+        <label class="form-label col-sm-5 pr-0">
+          DATE OF DELIVERY
+        </label>
+        <div class="col-sm-7">
+          <mat-form-field appearance="outline">
+            <input matInput [matDatepicker]="picker" [min]="minDate" formControlName="dateOfDelivery" autocomplete="off">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error>
+              {{ getError('dateOfDelivery') }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="my-3 text-center">
+        <button
+          mat-flat-button
+          class="w-50 btn-bg"
+          color="accent"
+          type="submit"
+          [disabled]="processing">
+          {{ processing ? 'Confirming...' : 'Confirm' }}
+        </button>
+      </div>
+      <div *ngIf="delivered" class="result">
+        <mat-icon>check_circle</mat-icon>
+        Item moved to Complete
+      </div>
+    </form>
+  </div>
+</div>

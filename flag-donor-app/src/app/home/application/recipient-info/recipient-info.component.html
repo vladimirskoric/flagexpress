@@ -1,0 +1,23 @@
+<div class="d-flex flex-column space-container">
+  <div class="donor-form-container m-4 px-3 pb-4 mx-auto">
+    <!--  PROGRESS BAR  -->
+    <div class="w-100 progress-bar">
+      <div class="progress bg-primary"></div>
+    </div>
+    <!--  MATERIAL STEPPER  -->
+    <mat-horizontal-stepper [linear]="isLinear" (selectionChange)="onStepChange($event)" #stepper>
+      <!--  DONOR DETAILS STEP   -->
+      <mat-step>
+        <app-recipient-sent-to></app-recipient-sent-to>
+      </mat-step>
+      <!--  DONOR LOCATION STEP   -->
+      <mat-step>
+        <app-recipient-located-at></app-recipient-located-at>
+      </mat-step>
+      <!--  DONOR LOCATION STEP   -->
+      <mat-step>
+        <app-recipient-donated-on></app-recipient-donated-on>
+      </mat-step>
+    </mat-horizontal-stepper>
+  </div>
+</div>

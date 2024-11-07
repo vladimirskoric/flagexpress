@@ -1,0 +1,50 @@
+<div class="space-container">
+  <div class="donor-form-container m-4 px-3 pb-4 mx-auto">
+    <!--  PROGRESS BAR  -->
+    <section class="progress-section">
+      <mat-progress-bar
+        [color]="color"
+        [mode]="mode"
+        [value]="value">
+      </mat-progress-bar>
+    </section>
+    <!--  MATERIAL STEPPER  -->
+    <mat-horizontal-stepper [linear]="isLinear" (selectionChange)="onStepChange($event)" #stepper>
+      <!--  DONOR DETAILS STEP   -->
+      <mat-step>
+        <app-donor-details></app-donor-details>
+      </mat-step>
+      <!--  DONOR LOCATION STEP   -->
+      <mat-step>
+        <app-donor-location></app-donor-location>
+      </mat-step>
+      <!-- DONATION ITEMS STEP -->
+      <mat-step>
+        <app-donor-items></app-donor-items>
+      </mat-step>
+      <!-- DONATION ITEMS DETAILS STEP -->
+      <mat-step>
+        <app-donor-items-details></app-donor-items-details>
+      </mat-step>
+      <!-- DONATION ITEMS DETAILS DESCRIPTION STEP -->
+      <mat-step>
+        <app-donor-items-details-description></app-donor-items-details-description>
+      </mat-step>
+
+      <!-- RECIPIENT STEPS -->
+      <mat-step>
+        <app-recipient-sent-to></app-recipient-sent-to>
+      </mat-step>
+      <mat-step>
+        <app-recipient-located-at></app-recipient-located-at>
+      </mat-step>
+      <mat-step>
+        <app-recipient-donated-on></app-recipient-donated-on>
+      </mat-step>
+
+      <!--mat-step>
+        <app-donor-complete></app-donor-complete>
+      </!--mat-step-->
+    </mat-horizontal-stepper>
+  </div>
+</div>

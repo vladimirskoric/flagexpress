@@ -1,0 +1,92 @@
+<form class="donor-location-form" [formGroup]="donorLocationForm" (ngSubmit)="formHandlerService.next(donorLocationForm)">
+  <p class="text-light-purple heading">Located at...</p>
+
+  <!-- Domestic   -->
+  <div *ngIf="isDomestic else DonorInternational">
+    <!-- Province   -->
+    <div class="form-group">
+      <label>Province*</label>
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-select id="province" placeholder="Select Province" formControlName="province" (selectionChange)="provinceChange($event)">
+          <mat-option *ngFor="let province of mntnc.provinces" [value]="province">
+            {{province.province_name}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="formHandlerService.getError(donorLocationForm,'province')">
+          {{ formHandlerService.getError(donorLocationForm,'province') }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <!-- City   -->
+    <div class="form-group">
+      <label>City*</label>
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-select placeholder="Select City" formControlName="city" (selectionChange)="cityChange($event)">
+          <mat-option *ngFor="let city of mntnc.cities" [value]="city">
+            {{city.city_name}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="formHandlerService.getError(donorLocationForm,'city')">
+          {{ formHandlerService.getError(donorLocationForm,'city') }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <!-- Barangay   -->
+    <div class="form-group">
+      <label>Barangay*</label>
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-select placeholder="Select Barangay" formControlName="barangay">
+          <mat-option *ngFor="let barangays of mntnc.barangays" [value]="barangays">
+            {{barangays.barangay_name}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="formHandlerService.getError(donorLocationForm,'barangay')">
+          {{ formHandlerService.getError(donorLocationForm,'barangay') }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <!-- House address   -->
+    <div class="form-group">
+      <label>House No./Street/Lot/Block*</label>
+      <mat-form-field appearance="outline" class="w-100 pb-0">
+        <input matInput placeholder="Address Line 1" formControlName="address" autocomplete="off">
+        <mat-error *ngIf="formHandlerService.getError(donorLocationForm,'address')">
+          {{ formHandlerService.getError(donorLocationForm,'address') }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <!-- International   -->
+  <ng-template #DonorInternational>
+    <!-- Country   -->
+    <div class="form-group">
+      <label>Country*</label>
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-select placeholder="Select Country" formControlName="country">
+          <mat-option *ngFor="let country of mntnc.countries" [value]="country">
+            {{country.name}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="formHandlerService.getError(donorLocationForm,'country')">
+          {{ formHandlerService.getError(donorLocationForm,'country') }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <!-- City   -->
+    <div class="form-group">
+      <label>City*</label>
+      <mat-form-field appearance="outline" class="w-100 pb-0">
+        <input matInput placeholder="Input City" formControlName="city" autocomplete="off">
+        <mat-error *ngIf="formHandlerService.getError(donorLocationForm,'city')">
+          {{ formHandlerService.getError(donorLocationForm,'city') }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </ng-template>
+  <div class="form-group">
+    <button mat-flat-button color="accent" type="submit" class="w-100">Next</button>
+  </div>
+</form>
+

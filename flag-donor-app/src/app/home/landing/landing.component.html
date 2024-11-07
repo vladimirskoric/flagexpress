@@ -1,0 +1,242 @@
+<!-- NAVIGATION -->
+<app-header (pageVar)="page($event)" [hidden]="showNav"></app-header>
+
+<!--HEADER -->
+<header class="page-header background-gradient">
+  <div class="page-header-content">
+    <div class="container">
+      <div class="row align-items-center mx-3">
+        <div class="px-0 col-lg-5" data-aos="fade-up">
+          <h1 class="page-header-title">
+            Send donations for front-liners.
+          </h1>
+          <div class="row align-items-center justify-content-lg-start justify-content-md-start justify-content-center px-3">
+            <button type="button" class="btn btn-green text-uppercase my-2 mr-lg-2 mr-md-2" [routerLink]="'./application/choose-flow-update'"> Offer donation </button>
+            <a href="http://ocd.gov.ph/donations-dashboard.html" class="btn btn-green-outline text-uppercase my-2"> View Reports </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- HEADLINE SECTION -->
+<section class="bg-white py-5">
+  <div class="container">
+    <div class="px-4">
+      <div class="row justify-content-center py-5">
+        <div class="col-lg-12">
+          <div class="text-center">
+            <h2 class="section-title">
+              How Frontliner Logistics Assistance Gateway (FLAGexpress.ph) works
+            </h2>
+          </div>
+        </div>
+      </div>
+      <div class="row text-center mt-5">
+        <div class="col-lg-4 my-3">
+          <img src="assets/images/calendar-icon.png" class="img-fluid" alt="calendar-icon">
+          <h2 class="text-light-purple my-3 font-weight-bold">Report past donations</h2>
+          <p class="section-headline-subtext">
+            Share information with the Office of Civil Defense (OCD) through FLAGexpress.ph about your donation  for an intended beneficiary
+          </p>
+        </div>
+        <div class="col-lg-4 my-3">
+          <img src="assets/images/donation-icon.png" class="img-fluid" alt="donation-icon">
+          <h2 class="text-light-purple my-3 mb-0 font-weight-bold">
+            Donate for the Frontliners</h2>
+          <p class="section-headline-subtext">
+            Donate to the Philippine government and the Office of Civil Defense (OCD) will distribute to frontliners and stakeholders
+          </p>
+        </div>
+        <div class="col-lg-4 my-3">
+          <img src="assets/images/report-icon.png" class="img-fluid" alt="report-icon">
+          <h2 class="text-light-purple my-3 font-weight-bold">View Report</h2>
+          <p class="section-headline-subtext">
+            See how many donors have contributed for COVID-19 response, as monitored by the Office of Civil Defense (OCD)
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT US SECTION -->
+<section class="bg-light py-5" id="about">
+  <div class="container">
+    <div class="px-4">
+      <div class="row justify-content-between align-items-center py-5">
+        <div class="col-sm-4" fxShow="true" fxHide.lt-sm="true" fxHide.lt-md="true">
+          <div class="card shadow rounded">
+            <div class="card-body p-0">
+              <img src="assets/images/flag-logo-vertical.png" class="img-fluid" alt="flag-logo-vertical">
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-8">
+          <div ngClass.lg="ml-5">
+            <h2 class="section-title">
+              About Us
+            </h2>
+            <p class="about-text">
+              The Frontliner Logistics Assistance Gateway or FLAGexpress.ph is a system which allows individuals and
+              organizations to donate goods for our front-liners in Metro Manila.
+            </p>
+            <p class="about-text mb-0">
+              This is a project of the Office of Civil Defense (OCD) for a transparent system of donations for our
+              front-liners. DCTx provided the digital assistance to realize this project. DCTx is a worldwide volunteer-based
+              community of experts from various fields who are developing digital solutions to alleviate the struggle of
+              Filipino front-liners against COVID-19.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PHOTO SECTION -->
+<section class="bg-white py-5">
+  <div class="container">
+    <div class="row justify-content-center my-5">
+      <div class="text-left col-lg-3">
+        <h2 class="section-title m-0">
+          Photos
+        </h2>
+        <p class="section-headline-subtext">
+          A few snippets of our operations, more on
+          <a href="https://twitter.com/civildefensePH" target="_blank" class="text-light-purple text-decoration-none">
+            Twitter
+          </a>
+        </p>
+        <div class="d-flex align-items-center justify-content-between px-0 my-lg-0 my-3">
+          <a class="btn px-0" (click)="prevPhoto()">
+            <img src="assets/images/arrow_left.png">
+          </a>
+          <div *ngFor="let slide of slidesPhoto" class="slick-dots-number">
+            <span (click)="slickModalPhoto.slickGoTo(slide.index)" [ngClass]="{'dots-active': this.slidePhotoCurrentIndex === slide.index}">
+              {{ slide.index + 1 | number:'2.0'}}
+            </span>
+          </div>
+          <a class="btn px-0" (click)="nextPhoto()">
+            <img src="assets/images/arrow_right.png">
+          </a>
+        </div>
+      </div>
+      <div class="col-lg-9">
+        <ngx-slick-carousel class="carousel"
+                            #slickModalPhoto="slick-carousel"
+                            [config]="slideConfigPhoto"
+                            (beforeChange)="beforeChange($event)">
+          <div ngxSlickItem *ngFor="let slide of slidesPhoto" class="slide">
+            <img src="{{ slide.img }}" class="img-fluid px-2">
+          </div>
+        </ngx-slick-carousel>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ SECTION -->
+<section class="bg-light py-5" id="faq">
+  <div class="container">
+    <div class="row justify-content-center my-5">
+      <div class="text-center">
+        <h2 class="section-title text-primary">
+          Frequently Asked Questions
+        </h2>
+      </div>
+    </div>
+    <div class="text-center py-5">
+      <ngx-slick-carousel class="carousel"
+                          #slickModal="slick-carousel"
+                          [config]="slideConfig">
+        <div ngxSlickItem *ngFor="let slide of slides" class="slide">
+          <div [innerHTML]="slide.data"></div>
+        </div>
+      </ngx-slick-carousel>
+    </div>
+  </div>
+</section>
+
+<!-- REPORT SECTION -->
+<section class="bg-report">
+  <div class="container">
+    <div class="row justify-content-center py-5">
+      <div class="col-lg-8">
+        <h2 class="section-title text-primary text-left">
+          View the latest transparency reports from the Office of Civil Defense (OCD)
+        </h2>
+      </div>
+      <div class="col-lg-4">
+
+        <a href="http://ocd.gov.ph/donations.html" class="btn btn-green rounded-pill" target="_blank">
+          <div class="d-flex justify-content-between align-items-center">
+            <span class="mx-2">
+              Go to Reports
+            </span>
+            <mat-icon class="mx-2">arrow_forward</mat-icon>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- PARTNERS SECTION -->
+<section>
+  <div class="container">
+    <div class="mx-lg-5 px-lg-5">
+      <div class="row justify-content-center my-5">
+        <div class="text-center">
+          <h2 class="section-title">
+            FLAGexpress.ph is powered by
+          </h2>
+        </div>
+      </div>
+      <div class="d-flex row align-items-center text-center">
+        <div class="col-lg-3 my-3">
+          <a href="https://dctx.ph/" target="_blank">
+            <img src="assets/images/dctx-logo.png" class="img-fluid partner-logo" alt="dctx-logo">
+          </a>
+        </div>
+        <div class="col-lg-2 my-3">
+          <a href="http://ocd.gov.ph/" target="_blank">
+            <img src="assets/images/dnd.png" class="img-fluid partner-logo" alt="ocd-logo">
+          </a>
+        </div>
+        <div class="col-lg-3 my-3">
+          <a href="https://dict.gov.ph/" target="_blank">
+            <img src="assets/images/dict-logo.png" class="img-fluid partner-logo" alt="dict-logo">
+          </a>
+        </div>
+        <div class="col-lg-2 my-3">
+          <a>
+            <img src="assets/images/iatf.svg" class="img-fluid partner-logo" alt="iatf-logo">
+          </a>
+        </div>
+        <div class="col-lg-2 my-3">
+          <a>
+            <img src="assets/images/ntf.svg" class="img-fluid partner-logo" alt="ntf-logo">
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+<footer class="py-5 mt-5 bg-light">
+  <div class="container">
+    <div class="row align-items-center justify-content-lg-between justify-content-center">
+      <div class="row mx-3">
+        <a (click)="showPrivacyPolicy()" class="text-dark policy-link">
+          Privacy Policy
+        </a>
+      </div>
+      <div class="text-center my-2">
+        Copyright © 2020 DCTx. All rights reserved.
+      </div>
+    </div>
+  </div>
+</footer>

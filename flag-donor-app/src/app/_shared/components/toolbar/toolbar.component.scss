@@ -1,0 +1,15 @@
+:host {
+  mat-toolbar {
+    background-color: #5e35b1;
+    color: #fff;
+    span {
+      font-size: 18px;
+    }
+  }
+  .transparent {
+    background-color: transparent;
+  }
+  span .page-title {
+    font-size: 14px;
+  }
+}

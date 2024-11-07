@@ -1,0 +1,20 @@
+<mat-toolbar
+    color="primary"
+    class="page-toolbar"
+    [ngClass]="{'transparent': transparentToolbar}"
+    *ngIf="showToolbar">
+  <mat-toolbar-row class="d-flex justify-content-between">
+    <div>
+      <button mat-icon-button (click)="back()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <span class="ml-2">
+        <strong *ngIf="isShowAppName" class="mr-2">FLAG</strong>
+        <span class="page-title">{{ pageTitle }}</span>
+      </span>
+    </div>
+    <span [hidden]="hideCancel">
+      <button mat-button class="text-white text-uppercase page-title" (click)="cancel()">Cancel</button>
+    </span>
+  </mat-toolbar-row>
+</mat-toolbar>

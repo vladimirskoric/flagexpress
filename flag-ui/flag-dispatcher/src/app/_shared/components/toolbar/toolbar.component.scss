@@ -1,0 +1,26 @@
+:host {
+  mat-toolbar {
+    background-color: #5e35b1;
+    color: #FFFFFF;
+    padding: 10px 20px 0px 20px;
+  }
+  .toolbar-logo{
+    width: 100%;
+    max-width: 60px;
+    margin-right: 20px;
+  }
+  .dashboard-title{
+    font-style: normal;
+    font-weight: bolder;
+    font-size: 20px;
+  }
+  .logout{
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-size: 12px;
+  }
+  .transparent {
+    background-color: transparent;
+  }
+}

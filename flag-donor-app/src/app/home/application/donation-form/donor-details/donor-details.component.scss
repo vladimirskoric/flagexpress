@@ -1,0 +1,39 @@
+.donor-details-form {
+	margin-top: 1em;
+
+	.heading {
+		font-size: 18px;
+		font-weight: bold;
+	}
+
+	.form-group .sector-options {
+		display: flex;
+		justify-content: space-around;
+
+		.option {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			padding: 0.5em;
+			border-radius: 12px;
+			width: 30%;
+			height: 55px;
+			background-color: #fff;
+
+			strong {
+				font-size: 11px;
+			}
+			p {
+				font-size: 8px;
+				line-height: 8px;
+			}
+		}
+	}
+
+	.field-description {
+		font-weight: 500;
+		font-size: 14px;
+		line-height: 18px;
+		color: #8c9297;
+	}
+}

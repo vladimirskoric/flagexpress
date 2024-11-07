@@ -1,0 +1,96 @@
+<mat-toolbar color="primary" class="page-toolbar">
+  <mat-toolbar-row>
+    <button mat-icon-button [mat-dialog-close]="true">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <span class="ml-2">FLAG Delivery Status</span>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+<div class="d-flex flex-column space-container">
+  <div class="p-3 d-flex flex-column align-items-center justify-content-center">
+
+    <div [ngSwitch]="donationForm.referenceCode">
+      <div *ngSwitchCase="1" class="result-container result-processing">
+        <div class="result-content">
+          <label class="result-label">
+            <img class="result-icon" src="assets/icons/check_status_processing.svg" alt="result-icon">
+            Processing Request!
+          </label>
+          <div class="result-description">
+            <p>Thank you for your donation! We’ve received your request and we’re now looking for
+              someone available to
+              pick-up the goods.</p>
+            <p>You will receive a text you once your pick-up schedule has been confirmed.</p>
+          </div>
+          <div class="result-reference-id">
+            <label>REF: {{donationForm.referenceCode}}</label>
+          </div>
+        </div>
+      </div>
+      <div *ngSwitchCase="2" class="result-container result-confirmed-completed">
+        <div class="result-content">
+          <label class="result-label">
+            <img class="result-icon" src="assets/icons/check_status_confirmed.svg" alt="result-icon">
+            Request Confirmed!
+          </label>
+          <div class="result-description">
+            <p>Good news! Your donation pick-up schedule has just been confirmed.</p>
+            <p>A representative from the AFP will arrive on the scheduled time to pick-up your donation.</p>
+          </div>
+          <div class="result-reference-id">
+            <label>REF: {{donationForm.referenceCode}}</label>
+          </div>
+        </div>
+      </div>
+      <div *ngSwitchCase="3" class="result-container result-confirmed-completed">
+        <div class="result-content">
+          <label class="result-label">
+            <img class="result-icon" src="assets/icons/check_status_completed.svg" alt="result-icon">
+            Request Completed!
+          </label>
+          <div class="result-description">
+            <p>Your donation has just been delivered to the hospital by the AFP.</p>
+            <p>Thank you very much for your contribution! Together we can overcome this crisis.</p>
+          </div>
+          <div class="result-reference-id">
+            <label>REF: {{donationForm.referenceCode}}</label>
+          </div>
+        </div>
+      </div>
+      <div *ngSwitchCase="4" class="result-container result-denied">
+        <div class="result-content">
+          <label class="result-label">
+            <img class="result-icon" src="assets/icons/check_status_denied.svg" alt="result-icon">
+            Request Confirmed!
+          </label>
+          <div class="result-description">
+            <p>Unfortunately, your request could not be approved. Below are remarks from the dispatcher:</p>
+            <i>Remarks here</i>
+          </div>
+          <div class="result-reference-id">
+            <label>REF: {{donationForm.referenceCode}}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <label>Location Details</label>
+			<mat-list class="">
+				<mat-list-item>
+					<label>Donor</label>
+				</mat-list-item>
+				<mat-list-item>
+					<span>{{donationForm.locationDonor}}</span>
+				</mat-list-item>
+				<mat-divider></mat-divider>
+				<mat-list-item>
+					<label>Recipient</label>
+				</mat-list-item>
+				<mat-list-item>
+					<span>{{donationForm.locationRecipient}}</span>
+				</mat-list-item>
+			</mat-list>
+		</div> -->
+
+  </div>

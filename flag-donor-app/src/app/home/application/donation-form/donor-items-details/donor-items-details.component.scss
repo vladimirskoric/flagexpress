@@ -1,0 +1,70 @@
+.space-container {
+	padding-top: 50px;
+}
+
+mat-toolbar {
+	justify-content: space-between;
+
+	p {
+		font-size: 18px;
+		margin: 0;
+		line-height: 40px;
+	}
+	a {
+		font-size: 14px;
+	}
+}
+
+.donor-items-details-form {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	padding: 0;
+	margin: 0;
+
+	.item-details-form {
+
+		.form-group {
+			margin: 0;
+			padding: 0;
+		}
+	}
+
+	mat-card {
+		margin-top: 5px;
+		margin-bottom: 5px;
+
+    .mat-card-header-text{
+      margin: 0 !important;;
+    }
+
+	}
+
+	.title-card {
+		color: #5e35b1;
+		font-weight: 600;
+		font-size: 16px;
+		line-height: 19px;
+	}
+
+	.remove-button {
+		color: #8c9297;
+		position: absolute;
+		top: 15px;
+		right: 15px;
+		padding: 5px;
+		line-height: 14px;
+		min-width: auto;
+		font-size: 14px;
+	}
+
+	.suffix-unit {
+		color: #666666;
+		font-size: 16px;
+	}
+
+	.width-half {
+		width: 50%;
+		// padding: 0 10px;
+	}
+}

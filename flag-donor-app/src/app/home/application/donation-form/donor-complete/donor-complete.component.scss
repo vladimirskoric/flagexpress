@@ -1,0 +1,22 @@
+.space-container {
+  padding-top: 50px;
+}
+
+.donor-form-container{
+  min-width: 320px;
+  max-width: 375px;
+  margin-top: 50px;
+  .ref-id {
+    text-decoration: underline;
+    font-size: 4em;
+    color: #5e35b1;
+    margin: 30px 0;
+  }
+  .text{
+    font-size: 18px;
+    line-height: 1.2;
+  }
+  .btn-home{
+    font-size: 18px;
+  }
+}

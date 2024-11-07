@@ -1,0 +1,22 @@
+<form class="donor-details-remarks-form" [formGroup]="donorItemRemarkForm">
+  <p class="text-light-purple heading">Donation Details</p>
+  <div class="form-group">
+    <mat-form-field appearance="outline" class="w-100">
+      <textarea matInput id="describe" placeholder="Describe your donations" type="text"
+        formControlName="describe"></textarea>
+    </mat-form-field>
+  </div>
+  <div class="terms-and-conditions">
+    <mat-checkbox color="accent" [(ngModel)]="tcAccepted" [ngModelOptions]="{ standalone: true }" (change)="tcChanged($event)">
+      By proceeding, I agree with FLAG
+      <a (click)="showPrivacyPolicy()" class="text-primary">
+        <u>Privacy Policy</u>
+      </a>.
+    </mat-checkbox>
+  </div>
+  <div class="form-group mt-3">
+    <button *ngIf="isComplete" (click)="submitForm()" mat-flat-button color="accent" type="submit" class="w-100">Next</button>
+    <button *ngIf="!isComplete" matStepperNext mat-flat-button color="accent" type="submit" class="w-100">Next</button>
+  </div>
+</form>
+

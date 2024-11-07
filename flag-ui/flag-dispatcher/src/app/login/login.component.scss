@@ -1,0 +1,21 @@
+:host{
+  .home-container{
+    margin-top: 40px;
+  }
+  .form-label {
+    font-family: Worksans, sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    color: #666666;
+    margin-bottom: 0;
+
+    &.has-error {
+      color: #f44336;
+    }
+  }
+  ::ng-deep .mat-form-field-infix {
+    border-top: 0.4em solid transparent;
+    padding: .8em 0 .8em 0;
+  }
+}

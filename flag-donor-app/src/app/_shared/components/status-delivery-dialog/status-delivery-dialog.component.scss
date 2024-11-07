@@ -1,0 +1,64 @@
+:host {
+  .space-container {
+    padding-top: 50px;
+  }
+
+  .result-container {
+    width: 320px;
+    height: 212px;
+    left: 20px;
+    top: 544px;
+    line-height: 212px;
+    border-radius: 8px;
+  }
+  .result-processing {
+    background: rgba(255, 224, 130, 0.4);
+  }
+  .result-confirmed-completed {
+    background: rgba(129, 199, 132, 0.4);
+  }
+  .result-denied {
+    background: rgba(235, 87, 87, 0.4);
+  }
+  .result-content {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: normal;
+    align-items: center;
+    text-align: center;
+    padding: 7%;
+  }
+  .result-label {
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 23px;
+  }
+  .result-description {
+    margin-bottom: 25px;
+  }
+  .result-description p {
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 13px;
+  }
+  .result-reference-id {
+    display: inline;
+    padding: 10px 42px;
+    color: white;
+    background: #00bcd4;
+    border-radius: 5px;
+  }
+
+  form {
+    width: 300px;
+    text-align: center;
+  }
+
+  mat-list-item {
+    height: 21px;
+  }
+  mat-divider {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+}

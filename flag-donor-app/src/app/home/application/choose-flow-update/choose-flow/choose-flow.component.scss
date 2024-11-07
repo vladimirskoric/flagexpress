@@ -1,0 +1,42 @@
+.choose-flow-options{
+    display: flex;
+    flex-direction: column;
+
+    .heading{
+        font-size: 21px;
+    }
+
+
+    mat-card{
+        display: flex;
+
+        margin: 1.5em 0.5em;
+        padding: 0.1em;
+        height: 63px;
+        border-radius: 40px;
+        border: 0.3 solid #e7e7e7;
+        max-width: inherit;
+
+        mat-radio-button{
+            margin: 0 1.5em;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        mat-radio-button span
+        {
+            white-space: normal;
+            font-size: 12px;
+            margin: auto 0;
+            padding: 0.5em;
+        }
+
+        p.option-text{
+            width: 80%;
+            height: max-content;
+            font-size: 10px;
+            margin: auto 0;
+            padding: 0.5em 0 0.5em 0;
+        }
+    }
+}

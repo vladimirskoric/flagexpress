@@ -1,0 +1,51 @@
+.space-container {
+	padding-top: 50px;
+}
+
+mat-toolbar {
+	justify-content: space-between;
+
+	p {
+		font-size: 18px;
+		margin: 0;
+		line-height: 40px;
+	}
+	a {
+		font-size: 14px;
+	}
+}
+
+.choose-flow-options {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	padding: 0;
+	margin: 0;
+
+	.item-name {
+		width: 70%;
+	}
+
+	.item-quantity-number {
+		padding-left: 10px;
+		padding-right: 10px;
+	}
+
+	.plus-minus-buttons {
+		width: 20px;
+		height: 20px;
+		line-height: 14px;
+		font-size: 14px;
+
+		&::ng-deep .mat-button-wrapper {
+			line-height: 14px;
+			padding: 0;
+
+			.mat-icon {
+				font-size: 14px;
+				padding-right: 4px;
+				padding-top: 4px;
+			}
+		}
+	}
+}

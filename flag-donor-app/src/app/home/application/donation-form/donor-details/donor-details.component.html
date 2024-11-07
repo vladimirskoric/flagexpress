@@ -1,0 +1,72 @@
+<form [formGroup]="donorDetailsForm" class="donor-details-form" (ngSubmit)="formHandlerService.next(donorDetailsForm)">
+  <p class="text-light-purple my-4 heading">The donation came from...</p>
+  <!--  Representative -->
+  <div class="form-group">
+    <label>Representative*</label>
+    <mat-form-field appearance="outline" class="w-100">
+      <input matInput placeholder="Name" formControlName="representative" autocomplete="off">
+      <mat-error *ngIf="formHandlerService.getError(donorDetailsForm,'representative')">
+        {{ formHandlerService.getError(donorDetailsForm,'representative') }}
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <!--  Organization -->
+  <div class="form-group">
+    <label>Organization/Affiliation* (N/A if none)</label>
+    <mat-form-field appearance="outline" class="w-100 pb-0">
+      <input matInput placeholder="Name" formControlName="organization" autocomplete="off">
+      <mat-error *ngIf="formHandlerService.getError(donorDetailsForm,'organization')">
+        {{ formHandlerService.getError(donorDetailsForm,'organization') }}
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <!--  Sector -->
+  <div class="form-group">
+    <label>Sector*</label>
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-select placeholder="Select One" formControlName="sector">
+        <mat-option *ngFor="let sector of mntnc.sectors" [value]="sector">
+          {{sector.name}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="formHandlerService.getError(donorDetailsForm,'sector')">
+        {{formHandlerService.getError(donorDetailsForm,'sector') }}
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <!--  Mobile Number -->
+  <div class="form-group">
+    <label>Mobile Number*</label>
+    <mat-form-field appearance="outline" class="w-100">
+      <input type="text" matInput placeholder="+6" formControlName="mobile" autocomplete="off">
+      <mat-error *ngIf="formHandlerService.getError(donorDetailsForm,'mobile')">
+        {{ formHandlerService.getError(donorDetailsForm,'mobile') }}
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <!--  Landline Number -->
+  <div class="form-group">
+    <label>Landline Number (optional)</label>
+    <mat-form-field appearance="outline" class="w-100">
+      <input id="organization" type="text" matInput placeholder="(02)" formControlName="landline" autocomplete="off">
+    </mat-form-field>
+  </div>
+
+  <!--  Display -->
+  <div class="form-group w-100">
+    <label>Display as anonymous</label>
+    <p class="field-description">Your personal information will not be shown on our transparency report.</p>
+    <div appearance="outline">
+      <mat-slide-toggle formControlName="isAnonymous">
+        {{donorDetailsForm.value.isAnonymous ? 'Anonymous enabled' : 'Anonymous disabled'}}
+      </mat-slide-toggle>
+    </div>
+  </div>
+  <div class="form-group">
+    <button mat-flat-button color="accent" type="submit" class="w-100">Next</button>
+  </div>
+</form>

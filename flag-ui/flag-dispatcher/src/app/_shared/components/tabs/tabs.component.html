@@ -1,0 +1,29 @@
+<div class="d-flex flex-column mx-auto h-100">
+  <mat-tab-group mat-align-tabs="center" dynamicHeight (focusChange)="tabChanged($event)" [selectedIndex]="1">
+    <mat-tab label="All">
+      <div class="px-3">
+        <app-all-list></app-all-list>
+      </div>
+    </mat-tab>
+    <mat-tab label="Requests">
+      <div class="px-3">
+        <app-request-list></app-request-list>
+      </div>
+    </mat-tab>
+    <mat-tab label="For Pick-up">
+      <div class="px-3">
+        <app-pickup-list></app-pickup-list>
+      </div>
+    </mat-tab>
+    <mat-tab label="Completed">
+      <div class="px-3">
+        <app-completed-list></app-completed-list>
+      </div>
+    </mat-tab>
+    <mat-tab label="With Issues">
+      <div class="px-3">
+        <app-issues-list></app-issues-list>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>

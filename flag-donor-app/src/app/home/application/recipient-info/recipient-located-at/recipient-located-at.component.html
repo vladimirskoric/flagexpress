@@ -1,0 +1,64 @@
+<form class="donor-location-form" [formGroup]="donorRecipientForm">
+  <p class="text-light-purple heading">Located at...</p>
+
+  <div>
+    <!-- Region -->
+    <div class="form-group">
+      <label>Region*</label>
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-select placeholder="Select Region" formControlName="region" (selectionChange)="regionChange($event)">
+          <mat-option *ngFor="let region of mntnc.regions" [value]="region">
+            {{region.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <!-- Province -->
+    <div class="form-group">
+      <label>Province*</label>
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-select matInput placeholder="Select Province" formControlName="province"
+          (selectionChange)="provinceChange($event)">
+          <mat-option *ngFor="let province of mntnc.provinces" [value]="province">
+            {{province.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <!-- City -->
+    <div class="form-group">
+      <label>City*</label>
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-select placeholder="Select City" formControlName="city" (selectionChange)="cityChange($event)">
+          <mat-option *ngFor="let city of mntnc.cities" [value]="city">
+            {{city.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <!-- Barangay -->
+    <div class="form-group">
+      <label>Barangay*</label>
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-select placeholder="Select Barangay" formControlName="barangay">
+          <mat-option *ngFor="let barangays of mntnc.barangays" [value]="barangays">
+            {{barangays.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <!-- House address -->
+    <div class="form-group">
+      <label>House No./Street/Lot/Block*</label>
+      <mat-form-field appearance="outline" class="w-100 pb-0">
+        <input matInput placeholder="Address Line 1" formControlName="address_line_one">
+      </mat-form-field>
+    </div>
+  </div>
+
+</form>
+
+<div class="form-group">
+  <button (click)="submitForm()" mat-flat-button color="accent" type="submit" class="w-100"
+    [disabled]="donorRecipientForm.invalid">Next</button>
+</div>

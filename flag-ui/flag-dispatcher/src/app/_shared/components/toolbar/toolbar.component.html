@@ -1,0 +1,16 @@
+<mat-toolbar
+    color="primary"
+    [ngClass]="{'transparent': transparentToolbar}"
+    >
+  <mat-toolbar-row>
+    <div class="d-flex align-items-center">
+      <img src="assets/images/dashboard-logo.png" class="toolbar-logo" fxShow="true" fxHide.lt-sm="true">
+      <div class="dashboard-title">
+        FLAG Dispatcher Dashboard
+      </div>
+    </div>
+    <div class="logout btn text-white" fxShow="true" fxHide.lt-sm="true" [routerLink]="['']">
+      LOG OUT
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>

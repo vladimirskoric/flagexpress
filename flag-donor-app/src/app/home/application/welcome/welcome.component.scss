@@ -1,0 +1,47 @@
+:host {
+  height: 100%;
+
+  .app-logo {
+    width: 160px;
+  }
+
+  .title {
+    font-size: 24px;
+    line-height: 24px;
+  }
+
+  .title-description {
+    text-align: center;
+    width: 320px;
+  }
+
+  .mat-flat-button {
+    width: 260px;
+  }
+
+  .signin-create {
+    padding-top: 24px;
+    padding-bottom: 20px;
+    text-align: center;
+  }
+
+  a {
+    color: cyan;
+    text-decoration: underline cyan;
+  }
+
+  mat-list {
+    width: 320px;
+  }
+  mat-list mat-list-item {
+    color: white;
+  }
+  svg-icons {
+    height: 28px;
+  }
+
+  .footer-logo {
+    width: 90px;
+  }
+
+}

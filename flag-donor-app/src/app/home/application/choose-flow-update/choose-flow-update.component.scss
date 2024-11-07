@@ -1,0 +1,20 @@
+.space-container{
+    padding-top: 50px;
+}
+
+mat-toolbar{
+    justify-content: space-between;
+
+    p{
+        font-size: 18px;
+        margin: 0;
+        line-height: 40px;
+    }
+    a{
+        font-size: 14px;
+    }
+}
+
+img.logistics-logo{
+    max-width: 180px;
+}

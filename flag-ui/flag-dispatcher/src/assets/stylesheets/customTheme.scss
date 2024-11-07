@@ -1,0 +1,175 @@
+@import '~@angular/material/theming';
+@import '~saturn-datepicker/theming';
+// Define a custom typography config that overrides the font-family as well as the
+// `headlines` and `body-1` levels.
+$custom-typography: mat-typography-config(
+  $font-family: 'Worksans, sans-serif',
+  $body-1: mat-typography-level(16px, 24px, 500),
+  $input: mat-typography-level(16px, 1.125, 400),
+  $button: mat-typography-level(14px, 24px, 400),
+);
+// Override the typography in the core CSS.
+@include mat-core($custom-typography);
+
+$primary: mat-palette($mat-deep-purple, 600);
+$accent: mat-palette($mat-green, 300);
+$warn: mat-palette($mat-red);
+$theme: mat-light-theme($primary, $accent, $warn);
+
+@include angular-material-theme($theme);
+//DATE PICKER
+@include sat-datepicker-theme($theme);
+/*************
+* COMPONENTS *
+**************/
+
+// For checkbox labels to line-wrap
+// https://github.com/angular/components/issues/8416
+.mat-checkbox-layout {
+  white-space: normal !important;
+}
+
+// Add more space between checkbox and its label
+.mat-checkbox-inner-container {
+  margin-right: 24px !important;
+}
+
+// Change overall flat button appearance
+button.mat-flat-button,
+a.mat-flat-button {
+  border-radius: 20px !important;
+  font-weight: 500;
+  line-height: 40px;
+
+  &.mat-accent {
+    color: #fff !important;
+  }
+
+  &.mat-white {
+    background: #fff;
+    color: #81C784 !important;
+  }
+
+  &.mat-primary-outline {
+    border: 1px solid #81c784;
+    color: #81c784;
+    background-color: #fff;
+  }
+}
+
+button.mat-stroked-button,
+a.mat-stroked-button {
+  border-radius: 20px !important;
+  font-weight: 500;
+  line-height: 40px;
+
+  &.mat-accent {
+    border-color: #81c784;
+  }
+}
+
+.font-weight-500 {
+  font-weight: 500 !important;
+}
+
+button {
+  outline: none !important;
+}
+
+.page-content {
+  padding-top: 64px;
+}
+
+.page-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+}
+
+.space-bg {
+  background: #5E35B1;
+  color: #fff;
+
+  a {
+    color: #fff;
+  }
+}
+
+.request{
+  color: #EA641D;
+  span{
+    background: #FFE082;
+    border-radius: 6px;
+    padding: 2px 6px;
+  }
+}
+.approved{
+  color: #FFFFFF;
+  span{
+    background: #04AFD5;
+    border-radius: 6px;
+    padding: 2px 6px;
+  }
+}
+.complete{
+  color: #FFFFFF;
+  span{
+    background: #81C784;
+    border-radius: 6px;
+    padding: 2px 6px;
+  }
+}
+.issues{
+  color: #FFFFFF;
+  span{
+    background: #EB5757;
+    border-radius: 6px;
+    padding: 2px 6px;
+  }
+}
+.custom-dialog-container .mat-dialog-container {
+  padding: 0 !important;
+  overflow: unset;
+  position: relative!important;
+  margin-top: 20px;
+    .mat-dialog-title{
+      margin: 0;
+    }
+    .mat-dialog-content{
+      margin: 0;
+      max-height: 85vh;
+    }
+    .dialog-header{
+      background: #9575CD;
+      justify-content: center;
+      padding: 20px 0;
+      white-space: normal;
+
+      .title{
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 29px;
+        color: #FFFFFF;
+        margin: 0 20px;
+      }
+
+      .close.mat-button {
+        position: absolute;
+        top: -15px;
+        right: -10px;
+        line-height: 0;
+        min-width: auto;
+        padding: 2px;
+        background: #9575CD;
+        color: #FFFFFF;
+        border: 3px solid #FFFFFF;
+        border-radius: 100%;
+        opacity: 1;
+      }
+    }
+}
+
+
+

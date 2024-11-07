@@ -1,0 +1,14 @@
+<button class="close mb-4" [mat-dialog-close]="true" mat-button>
+  <mat-icon>close</mat-icon>
+</button>
+<div id="spinner" align="center">
+  <mat-spinner></mat-spinner>
+  <label>Loading...</label>
+</div>
+<iframe class="airtable-embed airtable-dynamic-height"
+        src="https://airtable.com/embed/shrc3SrDmBhzYrDQn?backgroundColor=purple"
+        frameborder="0"
+        onmousewheel=""
+        width="100%"
+        onload="document.getElementById('spinner').style.display='none';">
+</iframe>

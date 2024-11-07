@@ -1,0 +1,174 @@
+<div class="table-container mt-5">
+  <form [formGroup]="filterForm" class="row justify-content-between px-3">
+    <div class="row px-3">
+      <!-- FILTER FIELD -->
+      <div class="mr-3">
+        <div class="table-label">Filter by:</div>
+        <mat-form-field appearance="outline">
+          <mat-select placeholder="Select Category" formControlName="filterBy">
+            <mat-option *ngFor="let filter of filterOptions" [value]="filter">
+              {{ filter.label }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <!-- DATE PICKER FIELD -->
+      <div>
+        <div class="table-label">Date Range:</div>
+        <mat-form-field appearance="outline">
+          <input matInput
+                 placeholder="Choose a date"
+                 [max]="maxDate"
+                 [satDatepicker]="resultPicker"
+                 formControlName="date"
+                 autocomplete="off">
+          <sat-datepicker panelClass="hdd-datepicker" #resultPicker [rangeMode]="true"></sat-datepicker>
+          <sat-datepicker-toggle matSuffix [for]="resultPicker"></sat-datepicker-toggle>
+        </mat-form-field>
+      </div>
+    </div>
+    <!-- ACTION FIELD -->
+    <div class="px-0">
+      <div class="table-label">Action:</div>
+      <mat-form-field appearance="outline">
+        <mat-select placeholder="Select Here" (selectionChange)="selectedAction($event)">
+          <mat-option *ngFor="let action of actionOptions" [value]="action" [hidden]="!action.inAction">
+            {{ action.label }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </form>
+  <!-- DATA TABLE -->
+  <mat-table [dataSource]="rows" matSort>
+    <!-- Checkbox Column -->
+    <ng-container matColumnDef="select">
+      <mat-header-cell *matHeaderCellDef>
+        <mat-checkbox color="primary"
+                      (change)="$event ? masterToggle() : null"
+                      [checked]="selection.hasValue() && isAllSelected()"
+                      [indeterminate]="selection.hasValue() && !isAllSelected()"
+                      [aria-label]="checkboxLabel()">
+        </mat-checkbox>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <mat-checkbox color="primary"
+                      (click)="$event.stopPropagation()"
+                      (change)="$event ? selectRow(row) : null"
+                      [checked]="selection.isSelected(row)"
+                      [aria-label]="checkboxLabel(row)">
+        </mat-checkbox>
+      </mat-cell>
+    </ng-container>
+    <!-- Ref No Column -->
+    <ng-container matColumnDef="refNo">
+      <mat-header-cell mat-sort-header *matHeaderCellDef class="text-center"> Ref No. </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let row">
+        <span class="row-item-text">
+          {{ row.refNo.id }}
+        </span>
+        <span class="row-item-sub-text"
+              [ngClass]="row.refNo.request === 'Request' ? 'request' :
+                         row.refNo.request === 'Approved' ? 'approved' :
+                         row.refNo.request === 'Complete' ? 'complete' :
+                         row.refNo.request === 'Issues' ? 'issues' : ''">
+          <span>
+            {{ row.refNo.request }}
+          </span>
+        </span>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="pickupDay">
+      <mat-header-cell mat-sort-header *matHeaderCellDef> Pick-up Day </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let row">
+        <div class="row-item-text">
+          {{row.pickupDay.date}}
+        </div>
+        <div class="row-item-sub-text">
+          {{row.pickupDay.schedule}}
+        </div>
+      </mat-cell>
+    </ng-container>
+    <!-- Donation Item/s Column -->
+    <ng-container matColumnDef="donationItem">
+      <mat-header-cell mat-sort-header *matHeaderCellDef> Donation Item/s </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let row">
+        <ng-container class="row-item-text" *ngFor="let item of row.donationItem">
+          {{item.name}},
+        </ng-container>
+      </mat-cell>
+    </ng-container>
+    <!-- Donor Column -->
+    <ng-container matColumnDef="donor">
+      <mat-header-cell mat-sort-header *matHeaderCellDef> Donor </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let row">
+        <div class="row-item-text">
+          {{row.donor.fullname}}
+        </div>
+        <div class="row-item-sub-text">
+          {{row.donor.contact}}
+        </div>
+      </mat-cell>
+    </ng-container>
+    <!-- Pick-up Location Column -->
+    <ng-container matColumnDef="pickupLocation">
+      <mat-header-cell mat-sort-header *matHeaderCellDef> Pick-up Location </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let row">
+        <div class="row-item-text">
+          {{row.pickupLocation.city}}
+        </div>
+        <div class="row-item-sub-text" matTooltip="{{row.pickupLocation.address}}">
+          {{row.pickupLocation.address}}
+        </div>
+      </mat-cell>
+    </ng-container>
+    <!-- Recipient Column -->
+    <ng-container matColumnDef="recipient">
+      <mat-header-cell mat-sort-header *matHeaderCellDef> Recipient </mat-header-cell>
+      <mat-cell mat-cell *matCellDef="let row">
+        <div class="row-item-text">
+          {{row.recipient.fullname}}
+        </div>
+        <div class="row-item-sub-text">
+          {{row.recipient.contact}}
+        </div>
+      </mat-cell>
+    </ng-container>
+    <!-- Drop-off Location Column -->
+    <ng-container matColumnDef="dropoffLocation">
+      <mat-header-cell mat-sort-header *matHeaderCellDef> Drop-off Location </mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <div class="row-item-text">
+          {{row.dropoffLocation.city}}
+        </div>
+        <div class="row-item-sub-text" matTooltip="{{row.dropoffLocation.address}}">
+          {{row.dropoffLocation.address}}
+        </div>
+      </mat-cell>
+    </ng-container>
+    <!-- Action Column -->
+    <ng-container matColumnDef="action">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let row" (click)="$event.stopPropagation()">
+        <button mat-button matTooltip="Actions" [matMenuTriggerFor]="menu">
+          <mat-icon>more_horiz</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="selectedRowAction(row, action)" *ngFor="let action of actionOptions" >
+            {{ action.label }}
+          </button>
+        </mat-menu>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="objectKeys(columnHeader)"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: objectKeys(columnHeader);"
+             [ngClass]=" { hovered: row.hovered, highlighted: row.highlighted } "
+             (click)="selectRow(row)"
+             (mouseover)="row.hovered = true"
+             (mouseout)="row.hovered = false"
+    >
+    </mat-row>
+  </mat-table>
+  <mat-paginator [length]="10" [pageSize]="10" [pageSizeOptions]="paginatorOption"></mat-paginator>
+</div>

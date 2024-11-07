@@ -1,0 +1,11 @@
+{
+  "/api": {
+    "target": "https://flagexpress-api-stage.azurewebsites.net/api",
+    "secure": false,
+    "pathRewrite": {
+      "^/api": ""
+    },
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+}

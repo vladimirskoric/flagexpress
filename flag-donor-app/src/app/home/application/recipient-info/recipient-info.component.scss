@@ -1,0 +1,18 @@
+.space-container {
+  padding-top: 50px;
+}
+
+.donor-form-container{
+  min-width: 320px;
+  max-width: 375px;
+  margin-top: 50px;
+
+  .progress-bar{
+      background-color: #e7e7e7;
+      height: 7px;
+      border-radius: 100px;
+      .progress{
+          width: 20%;
+      }
+  }
+}

@@ -1,0 +1,21 @@
+.space-container {
+    padding-top: 50px;
+}
+
+.donor-form-container{
+
+  min-width: 320px;
+  max-width: 375px;
+  margin-top: 50px;
+
+  .progress-section {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    height: 30px;
+    .mat-progress-bar{
+      height: 8px !important;
+      border-radius: 20px !important;;
+    }
+  }
+}

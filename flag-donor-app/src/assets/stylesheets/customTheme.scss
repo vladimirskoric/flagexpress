@@ -1,0 +1,220 @@
+@import '~@angular/material/theming';
+
+// Define a custom typography config that overrides the font-family as well as the
+// `headlines` and `body-1` levels.
+$custom-typography: mat-typography-config(
+  $font-family: 'Worksans, sans-serif',
+  $body-1: mat-typography-level(16px, 24px, 500),
+  $input: mat-typography-level(16px, 1.125, 400),
+  $button: mat-typography-level(14px, 24px, 400),
+);
+// Override the typography in the core CSS.
+@include mat-core($custom-typography);
+
+$primary: mat-palette($mat-deep-purple, 600);
+$accent: mat-palette($mat-green, 300);
+$warn: mat-palette($mat-red);
+$theme: mat-light-theme($primary, $accent, $warn);
+
+@include angular-material-theme($theme);
+
+/*************
+* COMPONENTS *
+**************/
+
+// For checkbox labels to line-wrap
+// https://github.com/angular/components/issues/8416
+.mat-checkbox-layout {
+  white-space: normal !important;
+}
+
+// Add more space between checkbox and its label
+.mat-checkbox-inner-container {
+  margin-right: 24px !important;
+}
+
+// Change overall flat button appearance
+button.mat-flat-button,
+a.mat-flat-button {
+  border-radius: 20px !important;
+  font-weight: 500;
+  line-height: 40px;
+  min-height: 40px;
+
+  &.mat-accent {
+    color: #fff !important;
+  }
+
+  &.mat-white {
+    background: #fff;
+    color: #81C784 !important;
+  }
+
+  &.mat-primary-outline {
+    border: 1px solid #81c784;
+    color: #81c784;
+    background-color: #fff;
+  }
+}
+
+button.mat-stroked-button,
+a.mat-stroked-button {
+  border-radius: 20px !important;
+  font-weight: 500;
+  line-height: 40px;
+
+  &.mat-accent {
+    border-color: #81c784;
+  }
+}
+
+.font-weight-500 {
+  font-weight: 500 !important;
+}
+
+button {
+  outline: none !important;
+}
+
+.page-content {
+  padding-top: 64px;
+}
+
+.page-toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+}
+
+.space-bg {
+  background: #5E35B1;
+  color: #fff;
+
+  a {
+    color: #fff;
+  }
+}
+
+.space-container {
+  .title {
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 28px;
+  }
+
+  p, ul, li {
+    font-size: 16px;
+    line-height: 19px;
+  }
+}
+
+.space-disclaimer {
+  font-style: normal;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 19px;
+}
+
+.space-btn-primary {
+  background: #81C784;
+  border-radius: 20px !important;
+  width: 250px;
+  padding: 0 10px;
+  font-size: 14px;
+  color: white;
+  text-decoration: none !important;
+}
+
+
+.text-light-purple{
+  color: #5E35B1;
+}
+
+.slick-prev{
+
+  height: 50px !important;
+  width: 50px !important;
+  left: -70px !important;
+
+  &:before {
+    display: block !important;
+    content: url('../images/arrow_left.png') !important;
+    font-size: 50px !important;
+    color: #9C9C9C !important;
+  }
+}
+
+.slick-next{
+  height: 50px !important;
+  width: 50px !important;
+  right: -70px !important;
+
+  &:before {
+    display: block !important;
+    content: url('../images/arrow_right.png') !important;
+    font-size: 50px !important;
+    color: #9C9C9C !important;
+  }
+}
+
+.slick-list {
+  padding: 0px !important;
+
+}
+.slick-dots{
+  position: absolute;
+  top: -60px;
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin: 0;
+  list-style: none;
+  text-align: center;
+  li {
+    padding: 0 20px !important;
+    margin: 0 !important;
+    button{
+      &:before {
+        font-size: 20px !important;
+        color: #CCC1E2 !important;
+        opacity: .50 !important;
+      }
+    }
+    span{
+      color: #111111;
+    }
+    &.slick-active {
+      span {
+        color: #693CB1;
+        background: #F2EFF9;
+        border-radius: 2px;
+        padding: 8px 12px;
+        margin: 0 !important;
+      }
+      button {
+        padding: 0 20px !important;
+        &:before{
+          color: #5E35B1 !important;
+          opacity: 1 !important;
+        }
+      }
+    }
+  }
+  .custom-dialog-container .mat-dialog-container {
+    padding: 0 !important;
+  }
+}
+
+.custom-dialog-container .mat-dialog-container{
+    background-color: #f2eff9;
+}
+.mat-horizontal-stepper-header-container {
+  display: none !important;
+}
+.mat-horizontal-content-container{
+  padding: 0 !important;
+}
+
+$main-theme-color: #5E35B1;

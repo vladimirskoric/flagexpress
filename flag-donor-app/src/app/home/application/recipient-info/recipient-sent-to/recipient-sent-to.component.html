@@ -1,0 +1,56 @@
+<form [formGroup]="donorRecipientForm" class="donor-details-form">
+  <p class="text-light-purple my-4 heading">This donation was sent to...</p>
+  
+  <div class="form-group">
+    <label>Facility Name*</label>
+    <mat-form-field appearance="outline" class="w-100">
+      <input matInput placeholder="Name" formControlName="affiliation_org">
+      <mat-error *ngIf="getError('affiliation_org')">
+        {{ getError('affiliation_org') }}
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div class="form-group">
+    <label>Representative*</label>
+    <mat-form-field appearance="outline" class="w-100">
+      <input matInput placeholder="Name" formControlName="contact_person">
+      <mat-error *ngIf="getError('contact_person')">
+        {{ getError('contact_person') }}
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div class="form-group">
+    <label>Sector*</label>
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-select placeholder="Select One" formControlName="sector_type">
+        <mat-option *ngFor="let sector of sectors" [value]="sector">
+          {{sector.name}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="getError('sector_type')">
+        {{ getError('sector_type') }}
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div class="form-group">
+    <label>Mobile Number*</label>
+    <mat-form-field appearance="outline" class="w-100">
+      <input type="text" matInput placeholder="+6" formControlName="mobile_number">
+      <mat-error *ngIf="getError('mobile_number')">
+        {{ getError('mobile_number') }}
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div class="form-group">
+    <label>Email*</label>
+    <mat-form-field appearance="outline" class="w-100">
+      <input matInput placeholder="Name" formControlName="email_address">
+      <mat-error *ngIf="getError('email_address')">
+        {{ getError('email_address') }}
+      </mat-error>
+    </mat-form-field>
+  </div>
+</form>
+<div class="form-group">
+  <button matStepperNext mat-flat-button color="accent" type="submit" class="w-100" [disabled]="donorRecipientForm.invalid">Next</button>
+</div>

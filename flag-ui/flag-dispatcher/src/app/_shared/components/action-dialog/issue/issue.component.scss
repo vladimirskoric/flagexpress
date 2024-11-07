@@ -1,0 +1,44 @@
+:host{
+  .title{
+    font-family: Worksans, sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 25px;
+    line-height: 47px;
+    color: #EB5757;
+    text-align: center;
+  }
+  .page-container{
+    .form-label {
+      font-family: Worksans, sans-serif;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 14px;
+      color: #666666;
+      margin-bottom: 0;
+
+      &.has-error {
+        color: #f44336;
+      }
+    }
+    ::ng-deep .mat-form-field-wrapper{
+      //padding-bottom: 0 !important;
+    }
+    .btn-bg{
+      background-color: #04AFD5;
+    }
+    .result{
+      font-weight: bold;
+      font-size: 16px;
+      line-height: 19px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #81C784;
+    }
+  }
+  ::ng-deep .mat-form-field-infix {
+    border-top: 0.4em solid transparent;
+    padding: .8em 0 .8em 0;
+  }
+}

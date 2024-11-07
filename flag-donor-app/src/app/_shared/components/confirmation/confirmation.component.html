@@ -1,0 +1,8 @@
+<h1 mat-dialog-title>Unsaved changes</h1>
+<div mat-dialog-content>
+  <p>You have unsaved changes made on this page which will be lost if you navigate away. Are you sure you want to discard this changes?</p>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="didConfirm(true)" color="warn">Discard</button>
+  <button mat-button (click)="didConfirm(false)">Continue editing</button>
+</div><br />

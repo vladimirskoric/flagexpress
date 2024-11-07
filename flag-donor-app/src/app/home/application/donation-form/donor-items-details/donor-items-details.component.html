@@ -1,0 +1,418 @@
+<div class="donor-items-details-form pb-0" *ngIf="donorItemDetailsForm">
+  <p class="mt-3 mb-2 font-weight-light text-left font-weight-bold text-light-purple">
+    I am donating...
+  </p>
+
+  <div *ngIf="isEmpty">
+    <label>No item type selected.</label>
+  </div>
+
+  <form [formGroup]="donorItemDetailsForm"  (ngSubmit)="formHandlerService.next(donorItemDetailsForm)">
+
+    <!-- Cash -->
+    <div class="item-details-form" formArrayName="CASH"
+         *ngFor="let item of donorItemDetailsForm.get('CASH')['controls']; let i = index;">
+      <mat-card [formGroupName]="i">
+        <mat-card-header>
+          <mat-card-title class="title-card">Cash</mat-card-title>
+          <!-- <button mat-button class="remove-button" (click)="btnRemove('CASH', item, i)">remove</button> -->
+        </mat-card-header>
+        <mat-card-content>
+          <div class="form-group">
+            <label>Amount (estimated value)</label>
+            <mat-form-field appearance="outline" class="w-100 pb-0">
+              <span matPrefix style="margin-bottom: 20px;">&#8369; &nbsp;</span>
+              <input matInput id="amount" placeholder="0.00" formControlName="amount">
+              <mat-error *ngIf="item.get('amount').hasError('required')">
+                Required
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Medical Supplies -->
+    <div class="item-details-form" formArrayName="MDS"
+         *ngFor="let item of donorItemDetailsForm.get('MDS')['controls']; let i = index;">
+      <mat-card [formGroupName]="i">
+        <mat-card-header>
+          <mat-card-title class="title-card">Medical Supplies</mat-card-title>
+          <!-- <button mat-button class="remove-button" (click)="btnRemove('MDS', item, i)">remove</button> -->
+        </mat-card-header>
+        <mat-card-content class="">
+          <div class="form-group">
+            <label>Item</label>
+            <mat-form-field appearance="outline" class="w-100 pb-0">
+              <input matInput id="description" placeholder="Name" formControlName="description">
+              <mat-error *ngIf="item.get('description').hasError('required')">
+                Required
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-group">
+            <label>Quantity</label>
+            <mat-form-field appearance="outline" class="w-100 pb-0">
+              <input matInput id="unit" placeholder="0" formControlName="total_unit_value">
+              <span class="suffix-unit" matSuffix>boxes</span>
+              <mat-error *ngIf="item.get('unit').hasError('required')">
+                Required
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="form-group" class="width-half pr-1">
+              <label>Estimated Weight</label>
+              <mat-form-field appearance="outline" class="w-100 pb-0">
+                <input matInput id="weight" placeholder="0" formControlName="weight">
+                <span class="suffix-unit" matSuffix>kg</span>
+                <mat-error *ngIf="item.get('weight').hasError('required')">
+                  Required
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="form-group" class="width-half pl-1">
+              <label>Estimated Value</label>
+              <mat-form-field appearance="outline" class="w-100 pb-0">
+                <input matInput id="estimated_cost" placeholder="0" formControlName="estimated_cost">
+                <span class="suffix-unit" matSuffix>Php</span>
+                <mat-error *ngIf="item.get('estimated_cost').hasError('required')">
+                  Required
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Dimensions</label>
+            <mat-form-field appearance="outline" class="w-100 pb-0">
+              <input matInput id="dimension" placeholder="L x W x H" formControlName="dimension">
+              <mat-error *ngIf="item.get('dimension').hasError('required')">
+                Required
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Water and Food -->
+    <div class="item-details-form" formArrayName="WF"
+         *ngFor="let item of donorItemDetailsForm.get('WF')['controls']; let i = index;">
+      <mat-card [formGroupName]="i">
+        <mat-card-header>
+          <mat-card-title class="title-card">Water and Food</mat-card-title>
+          <!-- <button mat-button class="remove-button" (click)="btnRemove('WF', item, i)">remove</button> -->
+        </mat-card-header>
+        <mat-card-content class="">
+          <div class="form-group">
+            <label>Item</label>
+            <mat-form-field appearance="outline" class="w-100 pb-0">
+              <input matInput id="description" placeholder="Name" formControlName="description">
+              <mat-error *ngIf="item.get('description').hasError('required')">
+                Required
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-group">
+            <label>Quantity</label>
+            <mat-form-field appearance="outline" class="w-100 pb-0">
+              <input matInput id="unit" placeholder="0" formControlName="unit">
+              <span class="suffix-unit" matSuffix>boxes/bottles</span>
+              <mat-error *ngIf="item.get('unit').hasError('required')">
+                Required
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="form-group" class="width-half pr-1">
+              <label>Estimated Weight</label>
+              <mat-form-field appearance="outline" class="w-100 pb-0">
+                <input matInput id="weight" placeholder="0" formControlName="weight">
+                <span class="suffix-unit" matSuffix>kg</span>
+                <mat-error *ngIf="item.get('weight').hasError('required')">
+                  Required
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="form-group" class="width-half pl-1">
+              <label>Estimated Value</label>
+              <mat-form-field appearance="outline" class="w-100 pb-0">
+                <input matInput id="estimated_cost" placeholder="0" formControlName="estimated_cost">
+                <span class="suffix-unit" matSuffix>Php</span>
+                <mat-error *ngIf="item.get('estimated_cost').hasError('required')">
+                  Required
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Dimensions</label>
+            <mat-form-field appearance="outline" class="w-100 pb-0">
+              <input matInput id="dimension" placeholder="L x W x H" formControlName="dimension">
+              <mat-error *ngIf="item.get('dimension').hasError('required')">
+                Required
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Non-Food Items -->
+    <div class="item-details-form" formArrayName="NF"
+         *ngFor="let item of donorItemDetailsForm.get('NF')['controls']; let i = index;">
+      <mat-card [formGroupName]="i">
+        <mat-card-header>
+          <mat-card-title class="title-card">Non-Food Items</mat-card-title>
+          <!-- <button mat-button class="remove-button" (click)="btnRemove('NF', item, i)">remove</button> -->
+        </mat-card-header>
+        <mat-card-content class="">
+          <div class="form-group">
+            <label>Item</label>
+            <mat-form-field appearance="outline" class="w-100 pb-0">
+              <input matInput id="description" placeholder="Name" formControlName="description">
+              <mat-error *ngIf="item.get('description').hasError('required')">
+                Required
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-group">
+            <label>Quantity</label>
+            <mat-form-field appearance="outline" class="w-100 pb-0">
+              <input matInput id="unit" placeholder="0" formControlName="unit">
+              <span class="suffix-unit" matSuffix>boxes</span>
+              <mat-error *ngIf="item.get('unit').hasError('required')">
+                Required
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="form-group" class="width-half pr-1">
+              <label>Estimated Weight</label>
+              <mat-form-field appearance="outline" class="w-100 pb-0">
+                <input matInput id="weight" placeholder="0" formControlName="weight">
+                <span class="suffix-unit" matSuffix>kg</span>
+                <mat-error *ngIf="item.get('weight').hasError('required')">
+                  Required
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="form-group" class="width-half pl-1">
+              <label>Estimated Value</label>
+              <mat-form-field appearance="outline" class="w-100 pb-0">
+                <input matInput id="estimated_cost" placeholder="0" formControlName="estimated_cost">
+                <span class="suffix-unit" matSuffix>Php</span>
+                <mat-error *ngIf="item.get('estimated_cost').hasError('required')">
+                  Required
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Dimensions</label>
+            <mat-form-field appearance="outline" class="w-100 pb-0">
+              <input matInput id="dimension" placeholder="L x W x H" formControlName="dimension">
+              <mat-error *ngIf="item.get('dimension').hasError('required')">
+                Required
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Service -->
+    <div class="item-details-form" formArrayName="SV"
+         *ngFor="let item of donorItemDetailsForm.get('SV')['controls']; let i = index;">
+      <mat-card [formGroupName]="i">
+        <mat-card-header>
+          <mat-card-title class="title-card">Service</mat-card-title>
+          <!-- <button mat-button class="remove-button" (click)="btnRemove('SV', item, i)">remove</button> -->
+        </mat-card-header>
+        <mat-card-content class="">
+          <div class="form-group">
+            <label>Service allocated</label>
+            <mat-form-field appearance="outline" class="w-100 pb-0">
+              <input matInput id="description" placeholder="Name" formControlName="description">
+              <mat-error *ngIf="item.get('description').hasError('required')">
+                Required
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-group">
+            <label>Start Date</label>
+            <mat-form-field appearance="outline" class="w-100 pb-0">
+              <input matInput [matDatepicker]="picker1" formControlName="start_date">
+              <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
+              <mat-error *ngIf="item.get('start_date').hasError('required')">
+                Required
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-group">
+            <label>End Date</label>
+            <mat-form-field appearance="outline" class="w-100 pb-0">
+              <input matInput [matDatepicker]="picker2" formControlName="end_date">
+              <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+              <mat-datepicker #picker2></mat-datepicker>
+              <mat-error *ngIf="item.get('end_date').hasError('required')">
+                Required
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Rentals -->
+    <div class="item-details-form" formArrayName="RENT"
+         *ngFor="let item of donorItemDetailsForm.get('RENT')['controls']; let i = index;">
+      <mat-card [formGroupName]="i">
+        <mat-card-header>
+          <mat-card-title class="title-card">Rentals</mat-card-title>
+          <!-- <button mat-button class="remove-button" (click)="btnRemove('RENT', item, i)">remove</button> -->
+        </mat-card-header>
+        <mat-card-content class="">
+          <div class="form-group">
+            <label>Item</label>
+            <mat-form-field appearance="outline" class="w-100 pb-0">
+              <input matInput id="description" placeholder="Name" formControlName="description">
+              <mat-error *ngIf="item.get('description').hasError('required')">
+                Required
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-group">
+            <label>Quantity</label>
+            <mat-form-field appearance="outline" class="w-100 pb-0">
+              <input matInput id="quantity" placeholder="0" formControlName="quantity">
+              <mat-error *ngIf="item.get('quantity').hasError('required')">
+                Required
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="form-group" class="width-half pr-1">
+              <label>Estimated Weight</label>
+              <mat-form-field appearance="outline" class="w-100 pb-0">
+                <input matInput id="weight" placeholder="0" formControlName="weight">
+                <span class="suffix-unit" matSuffix>kg</span>
+                <mat-error *ngIf="item.get('weight').hasError('required')">
+                  Required
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="form-group" class="width-half pl-1">
+              <label>Estimated Value</label>
+              <mat-form-field appearance="outline" class="w-100 pb-0">
+                <input matInput id="estimated_cost" placeholder="0" formControlName="estimated_cost">
+                <span class="suffix-unit" matSuffix>Php</span>
+                <mat-error *ngIf="item.get('estimated_cost').hasError('required')">
+                  Required
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Dimensions</label>
+            <mat-form-field appearance="outline" class="w-100 pb-0">
+              <input matInput id="dimension" placeholder="L x W x H" formControlName="dimension">
+              <mat-error *ngIf="item.get('dimension').hasError('required')">
+                Required
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-group">
+            <label>Start Date</label>
+            <mat-form-field appearance="outline" class="w-100 pb-0">
+              <input matInput [matDatepicker]="picker3" formControlName="start_date">
+              <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+              <mat-datepicker #picker3></mat-datepicker>
+              <mat-error *ngIf="item.get('start_date').hasError('required')">
+                Required
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-group">
+            <label>End Date</label>
+            <mat-form-field appearance="outline" class="w-100 pb-0">
+              <input matInput [matDatepicker]="picker4" formControlName="end_date">
+              <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+              <mat-datepicker #picker4></mat-datepicker>
+              <mat-error *ngIf="item.get('end_date').hasError('required')">
+                Required
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Others -->
+    <div class="item-details-form" formArrayName="Others"
+         *ngFor="let item of donorItemDetailsForm.get('Others')['controls']; let i = index;">
+      <mat-card [formGroupName]="i">
+        <mat-card-header>
+          <mat-card-title class="title-card">Others</mat-card-title>
+          <!-- <button mat-button class="remove-button" (click)="btnRemove('Others', item, i)">remove</button> -->
+        </mat-card-header>
+        <mat-card-content class="">
+          <div class="form-group">
+            <label>Item</label>
+            <mat-form-field appearance="outline" class="w-100 pb-0">
+              <input matInput id="description" placeholder="Name" formControlName="description">
+              <mat-error *ngIf="item.get('description').hasError('required')">
+                Required
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-group">
+            <label>Quantity</label>
+            <mat-form-field appearance="outline" class="w-100 pb-0">
+              <input matInput id="unit" placeholder="0" formControlName="unit">
+              <mat-error *ngIf="item.get('unit').hasError('required')">
+                Required
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div class="form-group" class="width-half pr-1">
+              <label>Estimated Weight</label>
+              <mat-form-field appearance="outline" class="w-100 pb-0">
+                <input matInput id="weight" placeholder="0" formControlName="weight">
+                <span class="suffix-unit" matSuffix>kg</span>
+                <mat-error *ngIf="item.get('weight').hasError('required')">
+                  Required
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="form-group" class="width-half pl-1">
+              <label>Estimated Value</label>
+              <mat-form-field appearance="outline" class="w-100 pb-0">
+                <input matInput id="estimated_cost" placeholder="0" formControlName="estimated_cost">
+                <span class="suffix-unit" matSuffix>Php</span>
+                <mat-error *ngIf="item.get('estimated_cost').hasError('required')">
+                  Required
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Dimensions</label>
+            <mat-form-field appearance="outline" class="w-100 pb-0">
+              <input matInput id="dimension" placeholder="L x W x H" formControlName="dimension">
+              <mat-error *ngIf="item.get('dimension').hasError('required')">
+                Required
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="form-group mt-3">
+      <button mat-flat-button color="accent" type="submit" class="w-100">Next</button>
+    </div>
+  </form>
+
+</div>

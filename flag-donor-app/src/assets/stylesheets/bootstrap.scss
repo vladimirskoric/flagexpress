@@ -1,0 +1,10 @@
+@import '~@angular/material/theming';
+
+$primary: mat-color(mat-palette($mat-deep-purple, 600));
+$secondary: mat-color(mat-palette($mat-green, 300));
+$warning: mat-color(mat-palette($mat-red));
+
+@import "~bootstrap/scss/bootstrap";
+$theme-colors: (
+  "primary": mat-color(mat-palette($mat-deep-purple, 600)),
+);

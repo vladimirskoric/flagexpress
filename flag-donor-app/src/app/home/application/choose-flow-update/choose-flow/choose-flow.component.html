@@ -1,0 +1,28 @@
+<p class="mt-3 mb-2 font-weight-light text-center font-weight-bold text-light-purple heading">
+    How would you like to offer your donation?
+</p>
+
+<form class="choose-flow-options" [formGroup]="chooseFlowForm" (ngSubmit)="next()">
+    <mat-radio-group formControlName="donorOption">
+        <mat-card>
+            <mat-radio-button value="ILL_DELIVER_TO_OCD" color="primary">
+                <span> I will deliver my donation to the Office of Civil Defense (Quezon City Headquarters)</span>
+            </mat-radio-button>
+        </mat-card>
+        <mat-card>
+            <mat-radio-button value="FOR_REPORTING_ONLY" color="primary">
+                <span>Report a past donation</span>
+            </mat-radio-button>
+        </mat-card>
+    </mat-radio-group>
+    <div class="m-auto">
+      <re-captcha formControlName="recaptcha"></re-captcha>
+    </div>
+    <button
+        mat-flat-button class="w-100 my-2"
+        color="accent"
+        [disabled]="!chooseFlowForm.valid"
+        type="submit">
+        Next
+    </button>
+</form>
