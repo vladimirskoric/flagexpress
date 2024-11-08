@@ -1,0 +1,26 @@
+{
+	"family": "fargate-keycloak-td",
+	"networkMode": "awsvpc",
+	"containerDefinitions": [{
+		"name": "keycloak",
+		"image": "jboss/keycloak:9.0.2",
+		"portMappings": [{
+			"containerPort": 8080,
+			"hostPort": 8080,
+			"protocol": "tcp"
+		}],
+		"essential": true,
+		"entryPoint": [
+			"sh",
+			"-c"
+		],
+		"command": [
+			"/bin/sh -c \"echo keycloak Service"
+		]
+	}],
+	"requiresCompatibilities": [
+		"FARGATE"
+	],
+	"cpu": "256",
+	"memory": "512"
+}

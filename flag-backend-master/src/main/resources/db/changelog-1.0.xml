@@ -1,0 +1,518 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <preConditions>
+        <dbms type="postgresql"/>
+    </preConditions>
+
+    <changeSet id="create-address-table" author="nitz">
+        <createTable tableName="address">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="address_line_one" type="varchar(50)"/>
+            <column name="barangay" type="varchar(50)"/>
+            <column name="city" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="province" type="varchar(50)"/>
+            <column name="country" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="region" type="varchar(50)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-requestor-types-table" author="dexter">
+        <createTable tableName="requestor_types">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(20)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="description" type="varchar(75)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="load-initial-requestor-types" author="dexter">
+        <loadData tableName="requestor_types"
+                  file="data/requestor-types-1.0.csv"
+                  relativeToChangelogFile="true"
+                  quotchar="'"
+                  separator=","
+                  usePreparedStatements="true"/>
+    </changeSet>
+
+    <changeSet id="create-requestor-statuses-table" author="dexter">
+        <createTable tableName="requestor_statuses">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(20)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="description" type="varchar(75)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="load-initial-requestor-statuses" author="dexter">
+        <loadData tableName="requestor_statuses"
+                  file="data/requestor-status-1.0.csv"
+                  relativeToChangelogFile="true"
+                  quotchar="'"
+                  separator=","
+                  usePreparedStatements="true"/>
+    </changeSet>
+
+    <changeSet id="create-requestors-table" author="dexter">
+        <createTable tableName="requestors">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="first_name" type="varchar(50)"/>
+            <column name="last_name" type="varchar(50)"/>
+            <column name="mobile_number" type="varchar(50)"/>
+            <column name="requestor_type_id" type="int">
+                <constraints foreignKeyName="fk_requestor_type"
+                             referencedTableName="requestor_types"
+                             referencedColumnNames="id"
+                             nullable="false" />
+            </column>
+            <column name="group" type="varchar(50)"/>
+            <column name="email" type="varchar(50)"/>
+            <column name="requestor_status_id" type="int">
+                <constraints foreignKeyName="fk_requestor_status"
+                             referencedTableName="requestor_statuses"
+                             referencedColumnNames="id"
+                             nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-sector-types-table" author="nitz">
+        <createTable tableName="sector_types">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="code" type="varchar(20)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(75)"/>
+            <column name="order" type="int"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="load-initial-sector-types" author="nitz">
+        <loadData tableName="sector_types"
+                  file="data/sector-types-1.0.csv"
+                  relativeToChangelogFile="true"
+                  quotchar="'"
+                  separator=","
+                  usePreparedStatements="true"/>
+    </changeSet>
+
+    <changeSet id="create-beneficiary-sector-types-table" author="nitz">
+        <createTable tableName="beneficiary_sectors">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="code" type="varchar(20)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(75)"/>
+            <column name="order" type="int"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="load-initial-beneficiary-sector-types" author="nitz">
+        <loadData tableName="beneficiary_sectors"
+                  file="data/beneficiary-sectors-1.0.csv"
+                  relativeToChangelogFile="true"
+                  quotchar="'"
+                  separator=","
+                  usePreparedStatements="true"/>
+    </changeSet>
+
+    <changeSet id="create-donors-table" author="nitz">
+        <createTable tableName="donors">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="contact_person" type="varchar(50)"/>
+            <column name="affiliation_org" type="varchar(50)"/>
+            <column name="mobile_number" type="varchar(20)"/>
+            <column name="landline_number" type="varchar(20)"/>
+            <column name="email_address" type="varchar(50)"/>
+            <column name="is_anonymous" type="boolean"/>
+            <column name="is_international" type="boolean"/>
+            <column name="sector_type_id" type="int">
+                <constraints foreignKeyName="fk_donor_sector"
+                             referencedTableName="sector_types"
+                             referencedColumnNames="id"
+                             nullable="false" />
+            </column>
+            <column name="address_id" type="int">
+                <constraints foreignKeyName="fk_donor_address"
+                             referencedTableName="address"
+                             referencedColumnNames="id"
+                             nullable="true" />
+            </column>         
+        </createTable>
+    </changeSet>
+    
+    <changeSet id="create-beneficiaries-table" author="nitz">
+        <createTable tableName="beneficiaries">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="contact_person" type="varchar(50)"/>
+            <column name="affiliation_org" type="varchar(50)"/>
+            <column name="mobile_number" type="varchar(20)"/>
+            <column name="landline_number" type="varchar(20)"/>
+            <column name="email_address" type="varchar(50)"/>
+            <column name="sector_type_id" type="int">
+                <constraints foreignKeyName="fk_donor_sector"
+                             referencedTableName="sector_types"
+                             referencedColumnNames="id"
+                             nullable="false" />
+            </column>
+            <column name="address_id" type="int">
+                <constraints foreignKeyName="fk_donor_address"
+                             referencedTableName="address"
+                             referencedColumnNames="id"
+                             nullable="true" />
+            </column> 
+        </createTable>
+    </changeSet>
+    
+    <changeSet id="create-request-types-table" author="dexter">
+        <createTable tableName="request_types">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(20)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="description" type="varchar(75)"/>
+            <column name="order" type="int"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="load-initial-request-types" author="dexter">
+        <loadData tableName="request_types"
+                  file="data/request-types-1.0.csv"
+                  relativeToChangelogFile="true"
+                  quotchar="'"
+                  separator=","
+                  usePreparedStatements="true"/>
+    </changeSet>
+
+    <changeSet id="create-currencies-table" author="nitz">
+        <createTable tableName="currencies">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="code" type="varchar(20)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(50)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="load-initial-currencies" author="nitz">
+        <loadData tableName="currencies"
+                  file="data/currencies-1.0.csv"
+                  relativeToChangelogFile="true"
+                  quotchar="'"
+                  separator=","
+                  usePreparedStatements="true"/>
+    </changeSet>
+
+    <changeSet id="create-donation_types-table" author="nitz">
+        <createTable tableName="donation_types">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="code" type="varchar(20)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(75)"/>
+            <column name="order" type="int"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="load-initial-donation-types" author="nitz">
+        <loadData tableName="donation_types"
+                  file="data/donation-types-1.0.csv"
+                  relativeToChangelogFile="true"
+                  quotchar="'"
+                  separator=","
+                  usePreparedStatements="true"/>
+    </changeSet>
+
+    <changeSet id="create-item-units-table" author="nitz">
+        <createTable tableName="units">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="code" type="varchar(20)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(20)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="load-initial-units" author="nitz">
+        <loadData tableName="units"
+                  file="data/units-1.0.csv"
+                  relativeToChangelogFile="true"
+                  quotchar="'"
+                  separator=","
+                  usePreparedStatements="true"/>
+    </changeSet>
+
+    <changeSet id="create-donation-requests-table" author="nitz">
+        <createTable tableName="donation_requests">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="donor_id" type="int">
+                <constraints foreignKeyName="fk_donotion_requests_donor"
+                             referencedTableName="donors"
+                             referencedColumnNames="id"
+                             nullable="false" />
+            </column>
+            <column name="beneficiary_id" type="int">
+                <constraints foreignKeyName="fk_donotion_requests_beneficiary"
+                             referencedTableName="beneficiaries"
+                             referencedColumnNames="id"
+                             nullable="true" />
+            </column>
+            <column name="request_type_id" type="int">
+                <constraints foreignKeyName="fk_donation_requests_request_type"
+                             referencedTableName="request_types"
+                             referencedColumnNames="id"
+                             nullable="false" />
+            </column>
+            <column name="created_date" type="TIMESTAMP without time zone"/>
+            <column name="last_modified" type="TIMESTAMP without time zone"/>
+            <column name="ref_code" type="char(6)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    
+    <changeSet id="create-donations-table" author="nitz">
+        <createTable tableName="donations">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="donation_request_id" type="int">
+                <constraints foreignKeyName="fk_donation_requests"
+                             referencedTableName="donation_requests"
+                             referencedColumnNames="id"
+                             nullable="true" />
+            </column>
+            <column name="currency_id" type="int">
+                <constraints foreignKeyName="fk_package_currency"
+                             referencedTableName="currencies"
+                             referencedColumnNames="id"
+                             nullable="false" />
+            </column>
+            <column name="value" type="double"/>
+            <column name="file_reference" type="text"/>
+            <column name="photo_reference" type="text"/>
+            <column name="remarks" type="text"/>
+            <column name="donation_date" type="TIMESTAMP without time zone"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-donation-items-table" author="nitz">
+        <createTable tableName="donation_items">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="donation_id" type="int">
+                <constraints foreignKeyName="fk_details_donations"
+                             referencedTableName="donations"
+                             referencedColumnNames="id"
+                             nullable="false"/>
+            </column>          
+            <column name="donation_type_id" type="int">
+                <constraints foreignKeyName="fk_donation_type"
+                             referencedTableName="donation_types"
+                             referencedColumnNames="id"
+                             nullable="false"/>
+            </column>
+            <column name="weight" type="double"/>
+            <column name="dimension" type="varchar(10)"/>
+            <column name="unit_id" type="int">
+                <constraints foreignKeyName="fk_package_content_unit"
+                             referencedTableName="units"
+                             referencedColumnNames="id"
+                             nullable="false" />
+            </column>
+            <column name="total_unit_value" type="double">
+                <constraints nullable="false"/>
+            </column>
+            <column name="currency_id" type="int">
+                <constraints foreignKeyName="fk_package_content_currency"
+                             referencedTableName="currencies"
+                             referencedColumnNames="id"
+                             nullable="false" />
+            </column>
+            <column name="estimated_cost" type="double"/>
+            <column name="description" type="varchar(50)"/>
+        </createTable>
+    </changeSet>
+
+
+    <changeSet id="create-service_types-table" author="nitz">
+        <createTable tableName="service_types">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="code" type="varchar(20)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(50)"/>
+            <column name="description" type="varchar(100)"/>
+            <column name="order" type="int"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="load-initial-service_types" author="nitz">
+        <loadData tableName="service_types"
+                  file="data/service-types-1.0.csv"
+                  relativeToChangelogFile="true"
+                  quotchar="'"
+                  separator=","
+                  usePreparedStatements="true"/>
+    </changeSet>
+
+    <changeSet id="create-services-table" author="nitz">
+        <createTable tableName="services">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="donation_id" type="int">
+                <constraints foreignKeyName="fk_details_donations"
+                             referencedTableName="donations"
+                             referencedColumnNames="id"
+                             nullable="false"/>
+            </column>          
+            <column name="donation_type_id" type="int">
+                <constraints foreignKeyName="fk_donation_type"
+                             referencedTableName="donation_types"
+                             referencedColumnNames="id"
+                             nullable="false"/>
+            </column>
+             <column name="service_type_id" type="int">
+                <constraints foreignKeyName="fk_service_type"
+                             referencedTableName="service_types"
+                             referencedColumnNames="id"
+                             nullable="false"/>
+            </column>
+            <column name="hours" type="double"/>
+            <column name="currency_id" type="int">
+                <constraints foreignKeyName="fk_package_content_currency"
+                             referencedTableName="currencies"
+                             referencedColumnNames="id"
+                             nullable="false" />
+            </column>
+            <column name="estimated_cost" type="double"/>
+            <column name="description" type="varchar(50)"/>
+            <column name="start_date" type="TIMESTAMP without time zone"/>
+            <column name="end_date" type="TIMESTAMP without time zone"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-rentals-table" author="nitz">
+        <createTable tableName="rentals">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="donation_id" type="int">
+                <constraints foreignKeyName="fk_details_donations"
+                             referencedTableName="donations"
+                             referencedColumnNames="id"
+                             nullable="false"/>
+            </column>          
+            <column name="donation_type_id" type="int">
+                <constraints foreignKeyName="fk_donation_type"
+                             referencedTableName="donation_types"
+                             referencedColumnNames="id"
+                             nullable="false"/>
+            </column>
+            <column name="currency_id" type="int">
+                <constraints foreignKeyName="fk_package_content_currency"
+                             referencedTableName="currencies"
+                             referencedColumnNames="id"
+                             nullable="false" />
+            </column>
+            <column name="estimated_cost" type="double"/>
+            <column name="description" type="varchar(50)"/>
+            <column name="start_date" type="TIMESTAMP without time zone"/>
+            <column name="end_date" type="TIMESTAMP without time zone"/>
+        </createTable>
+    </changeSet>
+
+     <changeSet id="create-cash-table" author="nitz">
+        <createTable tableName="cash_donations">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="donation_id" type="int">
+                <constraints foreignKeyName="fk_details_donations"
+                             referencedTableName="donations"
+                             referencedColumnNames="id"
+                             nullable="false"/>
+            </column>          
+            <column name="donation_type_id" type="int">
+                <constraints foreignKeyName="fk_donation_type"
+                             referencedTableName="donation_types"
+                             referencedColumnNames="id"
+                             nullable="false"/>
+            </column>
+            <column name="currency_id" type="int">
+                <constraints foreignKeyName="fk_package_content_currency"
+                             referencedTableName="currencies"
+                             referencedColumnNames="id"
+                             nullable="false" />
+            </column>
+            <column name="amount" type="double"/>
+            <column name="description" type="varchar(50)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-item-inventory" author="nitz">
+        <createTable tableName="item_inventories">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="code" type="varchar(20)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(50)"/>
+            <column name="unit" type="varchar(10)"/>
+            <column name="group" type="varchar(5)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="load-initial-items" author="nitz">
+        <loadData tableName="item_inventories"
+                  file="data/items-1.0.csv"
+                  relativeToChangelogFile="true"
+                  quotchar="'"
+                  separator=","
+                  usePreparedStatements="true"/>
+    </changeSet>
+
+</databaseChangeLog>

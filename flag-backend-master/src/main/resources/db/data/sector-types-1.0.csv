@@ -1,0 +1,6 @@
+code,name,order
+GOV,Government,1
+LGU,Local Government Units,2
+PRINGO,Private/Non-goverment organization,3
+INGO,International Non-government Organizations,4
+Others,Others,5

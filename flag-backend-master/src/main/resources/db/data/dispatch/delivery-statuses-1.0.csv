@@ -1,0 +1,6 @@
+name,description,order
+SORTING_1,Currently in OCD Warehouse for distribution,1
+SORTING_2,Delivered to OCD for Frontliner Dispatch,2
+DISPATCHED,For Frontliner Delivery,3
+COMPLETE_1,Delivered to Frontliner,4
+COMPLETE_2,Delivered and confirmed to OCD Admin for reporting,5

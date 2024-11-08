@@ -1,0 +1,5 @@
+code,name,description,order
+SV001,Janitorial, Janitorial Services,1
+SV002,Medical Personnels,This include all medical personnels,2
+SV003,AFP Personnels,This include all AFP personnels,3
+SV004,Police Personnels,This include all police personnels,4

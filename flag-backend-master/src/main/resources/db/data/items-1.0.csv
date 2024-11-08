@@ -1,0 +1,56 @@
+code,name,unit,group
+ITEM0001,Alcohol (1L),bott,NF
+ITEM0002,Alcohol (500ml),bott,NF
+ITEM0003,Alcohol (Gallons),gal,NF
+ITEM0004,Apron,pcs,MDS
+ITEM0005,Cadaver Bags,pcs,MDS
+ITEM0006,Cellular Phone,unit,NF
+ITEM0007,Clip Cap,pcs,MDS
+ITEM0008,Cotton,bag,NF
+ITEM0009,Disinfectant,bott,NF
+ITEM0010,Disinfectant Tent,set,NF
+ITEM0011,Face Shield,pcs,NF
+ITEM0012,Folding Bed with Air Mattress,unit,NF
+ITEM0013,Folding Beds,unit,NF
+ITEM0014,Food Pack,pack,WF
+ITEM0015,General Hazmat,pcs,NF
+ITEM0016,Goggles,pcs,NF
+ITEM0017,Gown (Protective),pcs,MDS
+ITEM0018,Gown (Surgical),pcs,MDS
+ITEM0019,Hand Sanitizer,bott,NF
+ITEM0020,Head Cover,pcs,MDS
+ITEM0021,Ice Sheet,sheet,MDS
+ITEM0022,ICU Hazmat,pcs,MDS
+ITEM0023,Interfolded Paper Towel,pack,NF
+ITEM0024,Masks (KN95),pcs,NF
+ITEM0025,Masks (N95),pcs,NF
+ITEM0026,Masks (Respirator),pcs,MDS
+ITEM0027,Masks (Surgical),pcs,MDS
+ITEM0028,Masks (Surgical),pcs,MDS
+ITEM0029,Medicines,pcs,MDS
+ITEM0030,Military Cot Bed,unit,NF
+ITEM0031,Mist Duster,unit,NF
+ITEM0032,Non-Invasive Ventilator,unit,MDS
+ITEM0033,PPE Set,set,MDS
+ITEM0034,Protective Suit (Clothing),pcs,MDS
+ITEM0035,Protective Suit (Jacket),pcs,MDS
+ITEM0036,Quarantine Kits,kit,MDS
+ITEM0037,Rain Coat,pcs,NF
+ITEM0038,Rice (25 kls),pcs,WF
+ITEM0039,Rice (50 kls),sack,WF
+ITEM0040,Sanitation Tent,set,NF
+ITEM0041,Shoe Cover,pair,NF
+ITEM0042,Stand Fan,unit,NF
+ITEM0043,Sterilance,unit,NF
+ITEM0044,Sterile Lancets,box,NF
+ITEM0045,Syringe,pcs,MDS
+ITEM0046,Test Kits,unit,MDS
+ITEM0047,Test Tube,pcs,MDS
+ITEM0048,Thermometer/Thermal Scanner,unit,NF
+ITEM0049,Virus Shut Out,pcs,MDS
+ITEM0050,Water 350 ml,bott,WF
+ITEM0051,Water 500 ml,bott,WF
+ITEM0052,Water Dispenser,unit,NF
+ITEM0053,Wet Wipes,pcs,NF
+ITEM0054,Gloves (Surgical),pcs,MDS
+

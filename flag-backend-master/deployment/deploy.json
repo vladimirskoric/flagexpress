@@ -1,0 +1,36 @@
+{
+    "containerDefinitions": [
+      {
+        "memory": 600,
+        "portMappings": [
+          {
+            "hostPort": 0,
+            "containerPort": 3000,
+            "protocol": "tcp"
+          },
+          {
+            "hostPort": 0,
+            "containerPort": 22,
+            "protocol": "tcp"
+          },
+          {
+            "hostPort": 0,
+            "containerPort": 6379,
+            "protocol": "tcp"
+          }
+        ],
+        "environment": [
+          {
+            "name": "NODE_ENV",
+            "value": "N_ENV"
+          }
+        ],
+        "essential": true,
+        "name": "<container-name>",
+        "image": "<your-docker-registry>/REPO:TAG",
+        "cpu": 512,
+        "memoryReservation": 300
+      }
+    ],
+    "family": "<service-name>"
+  }

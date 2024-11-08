@@ -1,0 +1,324 @@
+
+    <changeSet id="create-contact-details-table" author="nitz">
+        <createTable tableName="contact_details">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="facility_name" type="varchar(50)"/>
+            <column name="contact_name" type="varchar(50)"/>
+            <column name="mobile_number" type="varchar(20)"/>
+            <column name="email_address" type="varchar(20)"/>
+            <column name="address_id" type="int">
+                <constraints foreignKeyName="fk_contact_details_address"
+                             referencedTableName="address"
+                             referencedColumnNames="id"
+                             nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+ <changeSet id="create-delivery-statuses-table" author="nitz">
+        <createTable tableName="delivery_statuses">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(50)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="description" type="varchar(75)"/>
+            <column name="order" type="int"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="load-initial-delivery-statuses" author="nitz">
+        <loadData tableName="delivery_statuses"
+                  file="data/delivery-statuses-1.0.csv"
+                  relativeToChangelogFile="true"
+                  quotchar="'"
+                  separator=","
+                  usePreparedStatements="true"/>
+    </changeSet>
+
+    
+    <changeSet id="create-pickup-statuses-table" author="nitz">
+        <createTable tableName="pickup_statuses">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(50)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="description" type="varchar(75)"/>
+            <column name="order" type="int"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="load-initial-pickup-statuses" author="nitz">
+        <loadData tableName="pickup_statuses"
+                  file="data/pickup-statuses-1.0.csv"
+                  relativeToChangelogFile="true"
+                  quotchar=""
+                  separator=","
+                  usePreparedStatements="true"/>
+    </changeSet>
+
+    <changeSet id="create-fleets-table" author="nitz">
+        <createTable tableName="fleets">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(20)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="description" type="varchar(75)"/>
+        </createTable>
+    </changeSet>
+
+    
+    <changeSet id="create-fleet-assigment-table" author="l">
+        <createTable tableName="fleet_assignments">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="fleet_id" type="int">
+                <constraints foreignKeyName="fk_fleet_details"
+                             referencedTableName="fleets"
+                             referencedColumnNames="id"
+                             nullable="false"/>
+            </column>
+            <column name="fleet_contact" type="varchar(50)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="fleet_leader" type="varchar(50)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="created_time" type="TIMESTAMP without time zone"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-inbound-dispatches-table" author="nitz">
+        <createTable tableName="inbound_dispatches">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="contact_details_id" type="int">
+                <constraints foreignKeyName="fk_inbound_contact_details"
+                             referencedTableName="contact_details"
+                             referencedColumnNames="id"
+                             nullable="false"/>
+            </column>
+            <column name="fleet_assignment_id" type="int">
+                <constraints foreignKeyName="fk_inbound_fleet_assign"
+                             referencedTableName="fleet_assignments"
+                             referencedColumnNames="id"
+                             nullable="false"/>
+            </column>
+            <column name="request_remark" type="varchar(50)"/>
+            <column name="photo_reference" type="varchar(50)"/>
+            <column name="created_time" type="TIMESTAMP without time zone"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-pickup-status-history-table" author="nitz">
+        <createTable tableName="pickup_status_history">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="inbound_id" type="int">
+                <constraints foreignKeyName="fk_current_pickup_status_inbound"
+                             referencedTableName="inbound_dispatches"
+                             referencedColumnNames="id"
+                             nullable="false" />
+            </column>
+            <column name="status_id" type="int">
+                <constraints foreignKeyName="fk_current_pickup_status"
+                             referencedTableName="pickup_statuses"
+                             referencedColumnNames="id"
+                             nullable="false" />
+            </column>
+            <column name="pickup_status_remark" type="text"/>
+            <column name="is_active" type="boolean"/>
+            <column name="created_time" type="TIMESTAMP without time zone"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-outbound-dispatches-table" author="nitz">
+        <createTable tableName="outbound_dispatches">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="contact_details_id" type="int">
+                <constraints foreignKeyName="fk_outbound_contact_details"
+                             referencedTableName="contact_details"
+                             referencedColumnNames="id"
+                             nullable="false"/>
+            </column>
+            <column name="fleet_assignment_id" type="int">
+                <constraints foreignKeyName="fk_outbound_fleet_assign"
+                             referencedTableName="fleet_assignments"
+                             referencedColumnNames="id"
+                             nullable="true"/>
+            </column>
+            <column name="photo_reference" type="varchar(50)"/>
+            <column name="delivery_remark" type="varchar(50)"/>
+            <column name="created_time" type="TIMESTAMP without time zone"/>
+        </createTable>
+    </changeSet>
+
+
+    <changeSet id="create-delivery-status-history-table" author="nitz">
+        <createTable tableName="delivery_status_history">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="outbound_id" type="int">
+                <constraints foreignKeyName="fk_current_dispatch_status_outbound"
+                             referencedTableName="outbound_dispatches"
+                             referencedColumnNames="id"
+                             nullable="false" />
+            </column>
+            <column name="status_id" type="int">
+                <constraints foreignKeyName="fk_current_delivery_status"
+                             referencedTableName="delivery_statuses"
+                             referencedColumnNames="id"
+                             nullable="false" />
+            </column>
+            <column name="delivery_status_remark" type="text"/>
+            <column name="is_active" type="boolean"/>
+            <column name="created_time" type="TIMESTAMP without time zone"/>
+        </createTable>
+    </changeSet>
+
+
+    <changeSet id="create-schedules-table" author="dexter">
+        <createTable tableName="schedules">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="description" type="varchar(10)"/>
+            <column name="schedule_start" type="time"/>
+            <column name="schedule_end" type="time"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-pickup-schedules-table" author="dexter">
+        <createTable tableName="pickup_schedules">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="pickup_id" type="int">
+                <constraints foreignKeyName="fk_pickup_schedules_inbound"
+                             referencedTableName="inbound_dispatches"
+                             referencedColumnNames="id"
+                             nullable="false"/>
+            </column>
+            <column name="pickup_date" type="TIMESTAMP without time zone"/>
+            <column name="description" type="varchar(10)"/>
+            <column name="schedule_start" type="time"/>
+            <column name="schedule_end" type="time"/>
+            <column name="is_active" type="boolean"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-delivery-schedules-table" author="dexter">
+        <createTable tableName="delivery_schedules">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="dispatch_id" type="int">
+                <constraints foreignKeyName="fk_delivery_schedules_outbound"
+                             referencedTableName="outbound_dispatches"
+                             referencedColumnNames="id"
+                             nullable="false"/>
+            </column>
+            <column name="delivery_date" type="TIMESTAMP without time zone"/>
+            <column name="description" type="varchar(10)"/>
+            <column name="schedule_start" type="time"/>
+            <column name="schedule_end" type="time"/>
+            <column name="is_active" type="boolean"/>
+        </createTable>
+    </changeSet>
+
+        <changeSet id="create-otp-requests-table" author="dexter">
+        <createTable tableName="otp_requests">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="mobile_number" type="varchar(20)">
+                <constraints unique="true"/>
+            </column>
+            <column name="transaction_type" type="varchar(20)"/>
+            <column name="reference_code" type="varchar(20)"/>
+            <column name="validation_code" type="varchar(20)"/>
+            <column name="expiry" type="TIMESTAMP without time zone"/>
+        </createTable>
+    </changeSet>
+    
+    <changeSet id="load-fleet" author="l">
+        <loadData tableName="fleets"
+                  file="data/fleets-1.0.csv"
+                  relativeToChangelogFile="true"
+                  quotchar="'"
+                  separator=","
+                  usePreparedStatements="true"/>
+    </changeSet>
+    
+    <changeSet id="create-dispatch-details-table" author="glenn">
+        <createTable tableName="dispatch_details">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+             <column name="dispatch_id" type="int">
+                <constraints foreignKeyName="fk_details_dispatch"
+                             referencedTableName="outbound_dispatches"
+                             referencedColumnNames="id"
+                             nullable="false"/>
+            </column>
+            <column name="package_content_id" type="int">
+                <constraints foreignKeyName="fk_dispatch_package_content"
+                             referencedTableName="package_contents"
+                             referencedColumnNames="id"
+                             nullable="false"/>
+            </column>
+            <column name="unit_id" type="int">
+                <constraints foreignKeyName="fk_details_unit"
+                             referencedTableName="units"
+                             referencedColumnNames="id"
+                             nullable="false"/>
+            </column>
+            <column name="unit_value" type="double">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="load-schedules" author="l">
+        <loadData tableName="schedules"
+                  file="data/schedules-1.0.csv"
+                  relativeToChangelogFile="true"
+                  quotchar="'"
+                  separator=","
+                  usePreparedStatements="true"/>
+    </changeSet>
+
+        <changeSet id="create-request-status-history-table" author="nitz">
+        <createTable tableName="request_status_history">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="request_status_id" type="int">
+                <constraints foreignKeyName="fk_status_history_request_status"
+                             referencedTableName="request_statuses"
+                             referencedColumnNames="id"
+                             nullable="false" />
+            </column>
+            <column name="donation_request_id" type="int">
+                <constraints foreignKeyName="fk_status_history_donation_request"
+                             referencedTableName="donation_requests"
+                             referencedColumnNames="id"
+                             nullable="false" />
+            </column>
+            <column name="created_time" type="TIMESTAMP without time zone"/>
+        </createTable>
+    </changeSet>

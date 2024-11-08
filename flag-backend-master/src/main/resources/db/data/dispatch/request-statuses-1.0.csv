@@ -1,0 +1,3 @@
+name,description,order
+PENDING,Donation request pending,1
+APPROVED,Donation request approved,2

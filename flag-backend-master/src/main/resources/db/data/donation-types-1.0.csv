@@ -1,0 +1,9 @@
+code,name,order
+CASH,Cash,1
+MDS,Medical Supplies,2
+WF,Water and Food Items,3
+NF,Non-Food Items,4
+SV,Services,5
+RENT,Rentals,6
+Mixed,Various Donations,7
+Others,others,8

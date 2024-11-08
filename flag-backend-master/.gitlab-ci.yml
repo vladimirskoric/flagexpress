@@ -1,0 +1,71 @@
+#All the environment variables are defined under Settings > CI/CD > Secret Variables section 
+image: docker:latest
+variables:
+  DOCKER_DRIVER: overlay2
+
+services:
+- docker:dind
+
+stages:
+- build_dev
+- deploy_dev
+
+before_script:
+
+build_dev:
+  stage: build_dev
+  only:
+   - /^dev-.*$/
+  except:
+   - branches
+  script:
+   - echo "running test script"
+
+deploy_dev:
+  stage: deploy_dev
+  script:
+  # Install python requirements
+  - apk update
+  - apk upgrade
+  - apk add util-linux pciutils usbutils coreutils binutils findutils grep
+  - apk add python2 python2-dev py-pip
+
+  # AWS configs
+  - export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+  - export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+
+  # Install awscli
+  - pip install awscli
+
+  # Configure deploy.json
+  - cd deployment
+  #- sed -i -e "s/N_ENV/$NODE_ENV_DEVELOPMENT/g" deploy.json
+  #- sed -i -e "s/REPO/$REPO_DEV/g" deploy.json
+  #- sed -i -e "s/TAG/$CI_BUILD_REF_NAME/g" deploy.json
+
+  # Update task and service
+  - aws ecs register-task-definition --region $AWS_ECS_REGION --cli-input-json file://deploy-keycloak.json >> temp.json
+  - REV=`grep  '"revision"' temp.json | awk '{print $2}'`
+  - REV="${REV%?}"
+  - echo $REV
+  - cat temp.json
+  - sed -i -e "s/EC2/FARGATE/g" temp.json
+  - cat temp.json
+  - aws ecs update-service --cluster $AWS_CLUSTER_NAME --service fargate-keycloak-service --task-definition fargate-keycloak-td:${REV} --region $AWS_ECS_REGION  
+  
+  - aws ecs register-task-definition --region $AWS_ECS_REGION --cli-input-json file://deploy-minio.json >> temp2.json
+  - REV2=`grep  '"revision"' temp2.json | awk '{print $2}'`
+  - REV2="${REV2%?}"
+  - echo $REV2
+  - sed -i -e "s/EC2/FARGATE/g" temp2.json
+  - cat temp2.json
+  - aws ecs update-service --cluster $AWS_CLUSTER_NAME --service fargate-minio-service --task-definition fargate-minio-td:${REV2} --region $AWS_ECS_REGION  
+
+  - aws ecs register-task-definition --region $AWS_ECS_REGION --cli-input-json file://deploy-postgres.json >> temp3.json
+  - REV3=`grep  '"revision"' temp.json | awk '{print $2}'`
+  - REV3="${REV3%?}"
+  - echo $REV3
+  - sed -i -e "s/EC2/FARGATE/g" temp3.json
+  - cat temp3.json
+  - aws ecs update-service --cluster $AWS_CLUSTER_NAME --service fargate-postgres-service --task-definition  fargate-postgres-td:${REV3} --region $AWS_ECS_REGION                                                                                                                                                                 a:${REV} --region $AWS_ECS_REGION  
+  when: manual

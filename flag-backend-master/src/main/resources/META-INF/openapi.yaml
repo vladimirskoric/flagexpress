@@ -1,0 +1,1367 @@
+openapi: 3.0.0
+info:
+  title: DCTx FLAG API
+  description: >-
+    API for FLAG Web Services
+  version: "1.0.0"
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: donation
+    description: Endpoints for donation
+  - name: static
+    description: Endpoints for static values to be used in the forms
+  - name: dashboard
+    description: Endpoints for administrators
+  - name: public
+    description: Publicly accessible endpoints
+security:
+  - BearerAuth: []
+paths:
+  /auth/login:
+    post:
+      tags:
+        - public
+      summary: >-
+        Authentication endpoint. This requires a username and password. This
+        will return an authentication token required for accessing the other
+        endpoints.
+      operationId: auth
+      requestBody:
+        description: >-
+          Login request body contains the username and password
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        200:
+          description: >-
+            A successful login will return an access code which is a bearer token
+            needed to access the other endpoints.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        default:
+          description: >-
+            An error occured while performing the operation. A details JSON error is returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /auth/client/token:
+    post:
+      tags:
+        - public
+      summary: >-
+        Authentication endpoint. This requires a client ID and secret. This
+        will return an access token required for accessing the other
+        endpoints.
+      operationId: authClientToken
+      requestBody:
+        description: >-
+          Login request body contains the client ID and client secret
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientTokenRequest'
+      responses:
+        200:
+          description: >-
+            A successful login will return an access token which is a bearer token
+            needed to access the other endpoints.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientTokenResponse'
+        default:
+          description: >-
+            An error occured while performing the operation. A details JSON error is returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /sms/message:
+    post:
+      tags:
+        - requestor
+        - dashboard
+      summary: >-
+        Endpoint to send an SMS message. This requires a mobile number and a message. This
+        will return the message reference ID and the status.
+      operationId: sendSmsMessage
+      requestBody:
+        description: >-
+          SMS message request body contains the mobile number and a short message (160 ASCII characters)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendSmsMessageRequest'
+      responses:
+        200:
+          description: >-
+            A successful request will return the message status (Pending, Sent, or Failed) and the message reference ID,
+            which can used to check if the status has been updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SendSmsMessageResponse'
+        default:
+          description: >-
+            An error occured while performing the operation. A detailed JSON error will be returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /sms/message/{id}/status:
+    get:
+      tags:
+        - requestor
+        - dashboard
+      summary: >-
+        Retrieve the status of a message
+      operationId: getMessageStatus
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            description: the ID of the message
+            example: '80404765'
+      responses:
+        200:
+          description: >-
+            The status of the message
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SendSmsMessageResponse'
+        default:
+          description: >-
+            An error occured while performing the operation. A details JSON error is returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /donors:
+    get:
+      tags:
+        - donation
+      summary: >-
+        Retrieve the details of a donor
+      operationId: getDonors
+      parameters:
+      responses:
+        200:
+          description: >-
+            The list of all donors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Donor'
+        default:
+          description: >-
+            An error occured while performing the operation. A details JSON error is returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    post:
+      tags:
+        - donation
+      summary: Creates a donor.
+      operationId: createDonor
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Donor'
+      responses:
+        200:
+          description: >-
+            Donor created
+          content:
+        default:
+          description: >-
+            An error occured while performing the operation. A details JSON error is returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+                
+  /donors/{id}:
+    get:
+      tags:
+        - donation
+      summary: >-
+        Retrieve the details of a donor by id
+      operationId: getDonorById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            description: the ID of the donor
+            example: '1'
+      responses:
+        200:
+          description: >-
+            The details of the donor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Donor'
+        default:
+          description: >-
+            An error occured while performing the operation. A details JSON error is returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /donors/mobile/{number}:
+    get:
+      tags:
+        - donation
+      summary: >-
+        Retrieve the details of a donor by mobile number
+      operationId: getDonorByMobile
+      parameters:
+        - name: number
+          in: path
+          required: true
+          schema:
+            type: string
+            description: the mobile number of the donor
+            example: '630000000000'
+      responses:
+        200:
+          description: >-
+            The details of the donor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Donor'
+        default:
+          description: >-
+            An error occured while performing the operation. A details JSON error is returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /donors/sector/{id}:
+    get:
+      tags:
+        - donation
+      summary: >-
+        Retrieve the details of a donor by sector
+      operationId: getDonorBySector
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+            description: Sector classification of the donor
+            example: 1
+      responses:
+        200:
+          description: >-
+            The details of the donor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Donor'
+        default:
+          description: >-
+            An error occured while performing the operation. A details JSON error is returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /donations:
+    get:
+      tags:
+        - donation
+      summary: >-
+        Retrieve all donations
+      operationId: getDonations
+      parameters:
+      responses:
+        200:
+          description: >-
+            The details of the donations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Donation'
+        default:
+          description: >-
+            An error occured while performing the operation. A details JSON error is returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      tags:
+        - donation
+      summary: Creates a donation.
+      operationId: createDonation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Donation'
+      responses:
+        200:
+          description: >-
+            The details of the donation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Donation'
+        default:
+          description: >-
+            An error occured while performing the operation. A details JSON error is returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+           
+  /donations/{id}:
+    get:
+      tags:
+        - donation
+      summary: >-
+        Retrieve donation by Id
+      operationId: getDonationById
+      parameters:
+          - name: id
+            in: path
+            required: true
+            type: number
+            description: Id of the donation
+            example: 1
+      responses:
+        200:
+          description: >-
+            The details of the donation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Donation'
+        default:
+          description: >-
+            An error occured while performing the operation. A details JSON error is returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+                
+    delete:
+      tags:
+        - donation
+      summary: >-
+        Delete donation by Id
+      operationId: getDonationById
+      parameters:
+          - name: id
+            in: path
+            required: true
+            type: number
+            description: Id of the donation
+            example: 0
+      responses:
+        200:
+          description: >-
+            Donation deleted
+        default:
+          description: >-
+            An error occured while performing the operation. A details JSON error is returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /donations/request/{id}:
+    get:
+      tags:
+        - donation
+      summary: >-
+        Retrieve donation by request Id
+      operationId: getDonationByRequestId
+      parameters:
+          - name: id
+            in: path
+            required: true
+            type: number
+            description: Id of the donation request
+            example: 1
+      responses:
+        200:
+          description: >-
+            The details of the donation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Donation'
+        default:
+          description: >-
+            An error occured while performing the operation. A details JSON error is returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /donationrequests:
+    get:
+      tags:
+        - donation
+      summary: >-
+        Retrieve all donation requests
+      operationId: getDonationRequests
+      parameters:
+      responses:
+        200:
+          description: >-
+            The details of the requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DonationRequest'
+        default:
+          description: >-
+            An error occured while performing the operation. A details JSON error is returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      tags:
+        - donation
+      summary: Creates a donation request.
+      operationId: createDonationRequests
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DonationRequest'
+      responses:
+        200:
+          description: >-
+            The details of the packages
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DonationRequestRefCode'
+        default:
+          description: >-
+            An error occured while performing the operation. A details JSON error is returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /donationrequests/{id}:
+    get:
+      tags:
+        - donation
+      summary: >-
+        Retrieve donation request by Id
+      operationId: getDonationRequestByid
+      parameters:
+          - name: id
+            in: path
+            required: true
+            type: number
+            description: Id of the donation request
+            example: 1
+      responses:
+        200:
+          description: >-
+            The details of the requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DonationRequest'
+        default:
+          description: >-
+            An error occured while performing the operation. A details JSON error is returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      tags:
+        - donation
+      summary: >-
+        Delete donation request by Id
+      operationId: deleteDonationRequestByid
+      parameters:
+          - name: id
+            in: path
+            required: true
+            type: number
+            description: Id of the donation request
+            example: 0
+      responses:
+        200:
+          description: >-
+            Delete donation request by Id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DonationRequest'
+        default:
+          description: >-
+            An error occured while performing the operation. A details JSON error is returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /donationrequests/donor/{id}:
+    get:
+      tags:
+        - donation
+      summary: >-
+        Retrieve all donation request of a donor
+      operationId: getDonationRequestByDonorid
+      parameters:
+          - name: id
+            in: path
+            required: true
+            type: number
+            description: Id of the donor
+            example: 1
+      responses:
+        200:
+          description: >-
+            The details of the requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DonationRequest'
+        default:
+          description: >-
+            An error occured while performing the operation. A details JSON error is returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /static/currencies:
+    get:
+      tags:
+        - static
+      summary: >-
+        Retrieve all currencies
+      operationId: getCurrencies
+      responses:
+        200:
+          description: >-
+            All currencies
+        default:
+          description: >-
+            An error occured while performing the operation. A details JSON error is returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /static/donationtypes:
+    get:
+      tags:
+        - static
+      summary: >-
+        Retrieve all types of donations
+      operationId: getDonationTypes
+      responses:
+        200:
+          description: >-
+            All donation types
+        default:
+          description: >-
+            An error occured while performing the operation. A details JSON error is returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+                
+  /static/donorsectors:
+    get:
+      tags:
+        - static
+      summary: >-
+        Retrieve all types of donor sectors
+      operationId: getDonorSectors
+      responses:
+        200:
+          description: >-
+            All donor sectors
+        default:
+          description: >-
+            An error occured while performing the operation. A details JSON error is returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /static/units:
+    get:
+      tags:
+        - static
+      summary: >-
+        Retrieve all units
+      operationId: getUnits
+      responses:
+        200:
+          description: >-
+            All units
+        default:
+          description: >-
+            An error occured while performing the operation. A details JSON error is returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /static/servicetypes:
+    get:
+      tags:
+        - static
+      summary: >-
+        Retrieve all service types
+      operationId: getServiceType
+      responses:
+        200:
+          description: >-
+            All service types
+        default:
+          description: >-
+            An error occured while performing the operation. A details JSON error is returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /static/beneficiarysectors:
+    get:
+      tags:
+        - static
+      summary: >-
+        Retrieve all beneficiary sectors
+      operationId: getBenefeciarySectors
+      responses:
+        200:
+          description: >-
+            All beneficiary sectors
+        default:
+          description: >-
+            An error occured while performing the operation. A details JSON error is returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /static/requesttypes:
+    get:
+      tags:
+        - static
+      summary: >-
+        Retrieve all request types
+      operationId: getRequestTypes
+      responses:
+        200:
+          description: >-
+            All request types
+        default:
+          description: >-
+            An error occured while performing the operation. A details JSON error is returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /static/items:
+    get:
+      tags:
+        - static
+      summary: >-
+        Retrieve all donation items
+      operationId: getDonationItems
+      responses:
+        200:
+          description: >-
+            All donation items
+        default:
+          description: >-
+            An error occured while performing the operation. A details JSON error is returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+                
+  /static/regions:
+    get:
+      tags:
+        - static
+      summary: >-
+        Retrieve all regoins
+      operationId: getRegions
+      responses:
+        200:
+          description: >-
+            All regions
+        default:
+          description: >-
+            An error occured while performing the operation. A details JSON error is returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+                
+  /static/{region}/provinces:
+    get:
+      tags:
+        - static
+      summary: >-
+        Retrieve all provinces by region
+      operationId: getProvincesByRegion
+      parameters:
+        - name: region
+          in: path
+          required: true
+          schema:
+            type: string
+            description: the region
+            example: 'Region VII'
+      responses:
+        200:
+          description: >-
+            All provinces in a region
+        default:
+          description: >-
+            An error occured while performing the operation. A details JSON error is returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /static/provinces:
+    get:
+      tags:
+        - static
+      summary: >-
+        Retrieve all provinces
+      operationId: getProvinces
+      responses:
+        200:
+          description: >-
+            All provinces
+        default:
+          description: >-
+            An error occured while performing the operation. A details JSON error is returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+                
+  /static/municipalities:
+    get:
+      tags:
+        - static
+      summary: >-
+        Retrieve all municipalities
+      operationId: getMunicipalities
+      responses:
+        200:
+          description: >-
+            All municipalities
+        default:
+          description: >-
+            An error occured while performing the operation. A details JSON error is returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /static/{province}/municipalities:
+    get:
+      tags:
+        - static
+      summary: >-
+        Retrieve all municipalities in a province
+      operationId: getMunicipalitiesByProvince
+      parameters:
+        - name: province
+          in: path
+          required: true
+          schema:
+            type: string
+            description: the province
+            example: 'Cebu'
+      responses:
+        200:
+          description: >-
+            All municipalities in a province
+        default:
+          description: >-
+            An error occured while performing the operation. A details JSON error is returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+                
+  /static/countries:
+    get:
+      tags:
+        - static
+      summary: >-
+        Retrieve all countries
+      operationId: getCountries
+      responses:
+        200:
+          description: >-
+            All regions
+        default:
+          description: >-
+            An error occured while performing the operation. A details JSON error is returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+
+  /reports:
+    get:
+      tags:
+        - donation
+      summary: >-
+        Generate donation reports
+      operationId: generateReports
+      responses:
+        200:
+          description: >-
+            Generated successfully
+        default:
+          description: >-
+            An error occured while performing the operation. A details JSON error is returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /reports/{year}:
+    get:
+      tags:
+        - donation
+      summary: >-
+        Generate donation reports by year
+      operationId: generateReportsByYear
+      parameters:
+        - name: year
+          in: path
+          required: true
+          schema:
+            type: number
+            description: the year
+            example: 2020
+      responses:
+        200:
+          description: >-
+            Generated successfully
+        default:
+          description: >-
+            An error occured while performing the operation. A details JSON error is returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+                
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+
+  schemas:
+    Error:
+      type: object
+      properties:
+        id:
+          type: string
+          description: >-
+            a unique identifier for this particular occurrence of the problem.
+        links:
+          type: object
+          description: >-
+            a links object containing the following members;
+          properties:
+            about:
+              type: string
+              description: >-
+                a link that leads to further details about this particular occurrence of the problem.
+          additionalProperties: true
+        status:
+          type: string
+          description: >-
+            the HTTP status code applicable to this problem, expressed as a
+            string value.
+        code:
+          type: string
+          description: >-
+            an application-specific error code, expressed as a string value.
+        title:
+          type: string
+          description: >-
+            a short, human-readable summary of the problem that SHOULD NOT
+            change from occurrence to occurrence of the problem, except for
+            purposes of localization.
+        detail:
+          type: string
+          description: >-
+            a human-readable explanation specific to this occurrence of the
+            problem. Like title, this field’s value can be localized.
+        source:
+          type: array
+          description: >-
+            an object containing references to the source of the error, optionally including any of the following members;
+          items:
+            type: object
+            properties:
+              pointer:
+                type: string
+                description: >-
+                  a JSON Pointer [RFC6901] to the associated entity in the
+                  request document [e.g. "/data" for a primary data object, or "
+                  /data/attributes/title" for a specific attribute].
+              parameter:
+                type: string
+                description: >-
+                  a string indicating which URI query parameter caused the error
+                  .
+        meta:
+          type: object
+          description: >-
+            a meta object containing non-standard meta-information about the error.
+          additionalProperties: true
+    LoginRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          description: >-
+            The username to login.
+          example: 'test_user'
+        password:
+          type: string
+          format: password
+          description: >-
+            The password needed to login.
+          example: '123456'
+    LoginResponse:
+      type: object
+      properties:
+        access-code:
+          type: string
+          description: >-
+            A bearer token needed to access the protected endpoints
+        refresh-code:
+          type: string
+          description: >-
+            A token required to refresh an access token
+    ClientTokenRequest:
+      type: object
+      properties:
+        client_id:
+          type: string
+          description: >-
+            The client ID for the apps using the API. This should be requested from the Keycloak admin.
+          example: 'frontend-dev'
+        client_secret:
+          type: string
+          description: >-
+            The secret for the apps using the API. This should be requested from the Keycloak admin.
+          example: '776aabe1-a635-4b36-b635-06b28d778268'
+    ClientTokenResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+          description: >-
+            A bearer token needed to access the protected endpoints
+          example: 'eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lk...'
+
+    Requestor:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: >-
+            The ID of the requestor
+          example: 1
+        first_name:
+          type: string
+          description: >-
+            The requestor's first name
+        last_name:
+          type: string
+          description: >-
+            The requestor's last name
+        mobile_number:
+          type: string
+          description: >-
+            The requestor's mobile number
+          example: '+639990001111'
+        type:
+          type: string
+          description: >-
+            The requestor type
+          enum:
+            - INDIVIDUAL
+            - ORGANIZATION
+          example: INDIVIDUAL
+        group:
+          type: string
+          description: >-
+            The requestor's group should it be an organization
+          example: ACME Corp.
+        email:
+          type: string
+          description: >-
+            The requestor's email address
+          format: email
+          example: requestor@acme.corp
+        status:
+          type: string
+          description: >-
+            The status of the requestor
+          enum:
+            - GUEST
+            - PENDING
+            - ACTIVE
+            - INACTIVE
+          example: ACTIVE
+    SendSmsMessageRequest:
+      type: object
+      properties:
+        number:
+          type: string
+          description: >-
+            The mobile number to send the SMS message.
+          example: '+630000000000'
+        message:
+          type: string
+          description: >-
+            The short message (max 160 ASCII characters) to send.
+          example: 'This is the message.'
+    SendSmsMessageResponse:
+      type: object
+      properties:
+        message_id:
+          type: string
+          description: >-
+            The reference ID for the message that can be used to check its updated status later.
+        status:
+          type: string
+          description: >-
+            The status of the message (Pending, Sent, or Failed)
+
+    Donor:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: >-
+            The ID of the donor
+          example: 1
+        contact_person:
+          type: string
+          description: >-
+            The donor's name or representative of an affiliation or organization
+        affiliation_org:
+          type: string
+          description: >-
+            The name organization or affiliation giving the donation
+        mobile_number:
+          type: string
+          description: >-
+            The donor's mobile number
+          example: '+639990001111'
+        landline_number:
+          type: string
+          description: >-
+            The donor's landline number
+          example: '+639990001111'
+        isAnonymous:
+          type: boolean
+          description: >-
+            Indicate if donor wanted to be anonymous
+          example: 'false'
+        isInternational:
+          type: boolean
+          description: >-
+            Indicate if donor is from outside the country
+          example: 'false'
+        sector_type:
+          type: string
+          description: >-
+            The donor type
+          enum:
+            - GOV
+            - LGU
+            - PRINGO
+            - INGO
+          example: GOV
+        email_address:
+          type: string
+          description: >-
+            The donor's email address
+          format: email
+          example: donor@acme.corp
+        address:
+          type: object
+          description: >-
+            This contains the street no., block, house number etc.
+          example: {
+                    "address_line_one": "Block1, AFPOVAI",
+                    "barangay": "Western Bicutan",
+                    "city": "Taguig",
+                    "province": "Metro Manila",
+                    "region": "Region VII",
+                    "country": "Philippines"
+                  }
+
+    Donation:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: >-
+            The ID of the donation
+          example: 1
+        currency:
+          type: string
+          description: >-
+            The currency used for the donation
+          example: PHP
+        value:
+          type: string
+          description: >-
+            The total value of the donation
+          example: '1000'
+        remarks:
+          type: string
+          description: >-
+            The comments about a donation
+          example: nice
+        photo_reference:
+          type: array
+          items:
+              type: string
+          description: >-
+            The photo of the donation
+          example: ["data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxMSERITExIWFRUXFxgXGBgYFRcYFhUaFRUXFxUVFxgZHSggHRolGxUXITEhJSorLi4uGB8zODMtNygtLisBCgoKDg0OGhAQGi0dICUvLS0tLS8tLS0tLS0tLS0tLS0tLy0tLS0tLS0tLS0tLSsrLS0tLS0tLS0tLS0tKy03Lf/AABEIAP4AxwMBIgACEQEDEQH/xAAcAAABBAMBAAAAAAAAAAAAAAAFAAMEBgECBwj/xABJEAACAQIDBAYHBQYDBwMFAAABAgMAEQQSIQUxQVEGEyJhcYEHFDJSkaGxI0JicpIzQ1OCwdFjovAkc6OywuHxNIOTFTVEhLT/xAAYAQEAAwEAAAAAAAAAAAAAAAAAAQIDBP/EAB4RAQEAAgMBAQEBAAAAAAAAAAABAhESITEDUUEy/9oADAMBAAIRAxEAPwDq6ISbDfTvqj8vmKWC9sef0opQC/VH5fMUvVH5fMUUpUAv1R+XzFL1R+XzFFKVAL9Ufl8xS9Ufl8xRSlQC/VH5fMUjhW5fMUUql7V6Q9ZtfCYCJrhC82It+GJ+rj/UyOf5aCweqPy+YrHqrcvmK16RdI8Ngo8+IkCX9ld7ueSKNT/SuKdMPSHi8eww8CtFG7BFiQ3llLGwEjDgSfZGm+5I3B1PAbcjxGJfD4f7Uxi80ikdXHqQqZvvOSDoNwVrnSxN+qPy+YqsdGBgdiYRIJ8TEkzfaS9oZ2dgL2UdrKoAUabhUxvSZssf/knyhmP/AEUBv1R+XzFL1R+XzFV2T0q7MH76Q+EE39VqBivTDgl9iLESeCIv/O4+lBcfVH5fMUvVH5fMVzWT0xyyyLFhNnmSRtFUylmP8qJa3M5gBXROjgxpTPjWiDn91CpyxjkzsSWbwsPHfQPeqPy+YpeqPy+YoZt/p3gsKcjTdZKSFEUQ6yQsdFWy6Ak2AuRR7Z0zvGrSR9WxFymYMUvuViNM3O2l+J30ET1R+XzFL1R+XzFFKVAL9Ufl8xS9Ufl8xRSsNuNAFpUhSoH8F7Y8/pRSheC9sef0opQKlSpUCpUqr20Ol0GGxAgxRMBfWOR/2Mo4gSblYcQ1t4tege6RDM+GjYnI8jZhcgPlidlVrbxpe3HLWsX+zSRgEmCRglixPVOfYyk65GPZtwYrbQm2/SYjqElXUpLE4PMNIEax70kYedbY/DmWCRBoShynkw1Rh3hgD5VS3VXk3iE+kbpeNn4eyZTiJLiJTuFrZpGHurcacSQOZHEeivSw4XEYjFWMs7RlEZz2c8rhpJH4k9kWUb720FDum3Sd8biHmfslgAF/hoPZTx3k95NA8NOq7u03yHhV1Bva20pZpGlmdpZW4nf3ADcqjkLCm9kYmWCQyowWSxCsBd0zaMUJ0VraXtcAmxFQROx3WHy+ZpxO+T4G1BJYkkkkknUkkkseZJ1J7zWrE8LfH/tWqsvP53pxRegiyyuOXlUrZ2yZZmvIJEj3lygF+5OsZFv3kgVNw0BW2WaNP5mB+IWpgwLNqxw83/7IDHwJcH5UFi2b0qg2bGUwUESMQM0rkzzP+YrkQdwVio5VXdsdMcZjXEXWzSFzZYkNgxP3QkYAYeIPjTWN6ProWjxEHew66H/5FF18bN510v0f7W2XhFsIBAxsrYguJo3PI4gWKDudUFA/6MfRycKVxWLAOIt9nGLFcODvOmhkI4jduF99dNrWNwQCDcHUHeD3g1tQKlSpUCrB3Gs1g7jQBRSpClQP4L2x5/SilC8F7Y8/pRSgVKlSoFQbpX0dhx+HeCYaHVWHtRsPZde8cuIuDvowTXFPSb6SZGkfC4OUxxoSskqGzuwNmSNh7KjdmGpO4gDUK3sbb2M2fiG2dI2aPro4WRvZQ9amWSI71BFjl3a7r16Cw9eVuj4OI2jhUuSzzxlmJJY2YEkkm5Nlr1TGN1Z5+xph5XkbpRB1eOxcZ+5PKo8BI1vlao0IFHfSlBl2xjh/i5v1Irf1qvR+NaM0xSK3V19351FBp6FGYgKpYncFBJPgBvoJkUicgPEVPw0cR3uw/LGG/wCsVEWIR/topE8RlPwdaeWKFvZly/njNv1IW+lAbTZkIF29ZA5nCm3xEtORxYM6K8bHlKs8X+ZXYDzoZh8HPGC6Fio+/A4a3eQpuPO1HIsBjXQMoXEqVzZXCOxU/eBJNx+Vr0GcNJDDr1c8S/xMNiRJH56W8jrUx8VDbrEmWTgXaMxyLfhI0dwR+dLGq2wjzEEPhpNxBzFPAj21H6qjTwPEQTpe9mUgqw42I0Ph8aDpPRzbcmGAbCsHjv28MWXI3M4dwSscnHJ7J4hd9dQ2FtyHFx9ZE17HK6kWeNuKSLvVv/IuK8wpO6kshINtcumnHTiO6jewul00MqzK3bAALe+o/dzLftryPtLwO8UHpWlVa6GdM4NoJ2DklUduJj2l/EvvJ+IedjpVloFWDuNZrB3GgCilSFKgfwXtjz+lFKF4L2x5/SilAqVYJrnfT70krhy2FwY6/GHSyAyCLxC3LP8AhG7jyIMel7pv6tEcJA328g7bA6wxkcxudhu4ga8r8Clb5bqkbTabr5ROHEua8mc9sudTm/Fru4brCjnRDoHitpB3iKRxqbdZJezNxVQASbcTuF6Bn0S4UvtjC/h6xz/LE1vmRXp5a456LehE+D2hO2JCho4wEs11cSnWRTxHZt4k12MVlle2uM6eYfSaet2vjra/aBf0Rov9KrIQqd3xo10mlzbSxj88TMP+IwH0pjJfQ2see4d5rVlW2z8PDJpISgP3gMwU/iUWJHeKI4/odiolWRAJo2GZXiOcEDjYdod+mlCjh2hkKsCLGzA7x/276NbK2q0QyEZ4mN2jJI199GGqSDgw+dA7sHptjcNZes66PcY5ruPAMe0vxt3UdxDR7RBbDdWk9rnDSxxdq28wyhQT4E38KE7Vym0jgzwsbJMAqzxn+HN91nHJ/aGqkDc9DsSGWBpoGbPFYt1epA/iCNjnVhxAYjiCdwCvylo5CCjQyqbGxZWU+B1HxovgOkxt1eITrEvcOnYnQ++ri128dTxNHMLCu04xFM6NOotFiU48knTRrd5HgedK2jgZMPK8Mq5XU2I4HkQeIPA0Fj2htJ1CmQrjcM2iSOCJVNvYZx2kkHfcHeKHPksTCxKn2opLZh8NHHeLEcuNDMNiWTMBqrCzKdzDh5jeDvFNq9vCglxSlWDDgb2OoPce4jTzrO2tm5FXEw3MDmxPGJ/4b8u48fGmDru30Q6P7c6hmBQOjjLLE3syLx8+RoBWzdoSCVDGWEgPYZGysG7iDv4W43tXYOjHpXaIrBtONo20AlMbIT/vIyAf5l07hTOysdgZEAxMMeLw2gErxq2Jwt9yz6ZnjHCUage1f2q6NsfYmGSILETJAwBVGkM8VjreMyFiFtwBt3UBLA46KZFkikWRG1DIwZT5ipB3GguH6KYWJzJBF6ux1JhJjDHmyKcjfzKaMgac9KAMKVIUqB/Be2PP6UUoXgvbHn9KKUEfH4RZUKMWCtocrFGI4jMpBF+4iq5t2KPZ2DZcDh40mciKBUQC8spsrNbUhRdyTwQ1a6A4hw+Kcn2YFAUf4ki3dvKMqB+d+dRbqbTJuqrsT0XYFIMuIjOIla5kmZ3DMzasy2bsi58ed6O9GMEuEU4NAAsNih4skhZldvx5g4J4lb6XsDMEuYXHjpQTbgaLF4fEA/Zshgl8S69S3k7Ff56y3uNdcandIhlhbEDSSBWkU8wou8bfhYD4gHeBU6WUAXqNtHC9fh5ob26yN47/AJ1Iv86b2Mc+GiD6kLkbvaO8b/NTT2HlebeleHtjcWOc8vleRmU/MfGoMoJS/G3zG+rZ6T9iHC7QfUlJgJUJ3jTIyX42K7+TCqqr625/OtZ4yvoxgD69BkH/AKmJexzmjG+PvdeHMaUGJ38D/aokM7wyB0YhlNwRwI3Gj+1pExCjFxgAsbTIN0ctvaA4K9ie4hhUoabD2x1bEModHGWSM7pF/ow3ht4NP46FsJJHNBI3VvcwzDQm3tRvyddxB0O/carhVrtlBOUFjYE2UEXY23AXGtWHo7tKN0fDYgkQy2uQLmGQaJOg5jcw4rQRsTjPtOuT7KS92ydkX95LbgeK/wBNAZn2uuPhWKey4lBaGbcJP8GTlfgdwPK9VrGwPBK8MlsyGxsbg8VZTxUggjuNMK3Dgd39qB1gQSCLEGxB3gjQg0qzLISbk3PM79NKxQbo9qZxfvAG/duPw3VvUrCx5zYGz8AdA/cDwbu4+OhCJg9sNGQwYqw+8psRVr6MekaTCNeNkKE3aJjljYk3JA3Ix17S2GtyGoJDtLqZAzoMymwYquZbbwcwIJ7mDDurrXQnprgcSUhxEGHV2ICSCKNUck6Kw1yudBvse4kLQWnon0/weOsqyCOY/upCAx/Idzjw15gVaydDQefopgX9rBYc/wDsx38b230UhhCLlXQAWAuTb40AkUqQpUD+C9sef0opQvBe2PP6UTfdQA2xEuIZsknVRKxTMoBkkKHK5UsCFQEFdxJsToLXE7WVsEJZCzSRSkXZ7Fo3yKigkAXRgoAJ1DW35tCnR1rYXDDnFGb8yyAk/E0QxMSyI0cihkYFWUi4YEWINZW76azHXaq+jbaYnwSG9yjyRn+Vzl/ylasuPwgmikiJsHUrfiCRow7wbHyqj9HtgNsjFSRqxfBYlwY2Ju0E24RyHiGFgrc1AOpF78j1HlW9gZsTFl4kZtH1Vx7roSrjyYGs7KfK+IjOgWYkeEqLKT+uR/hQuHagjmxUfVSuRMSoRLg50Rz2iQo1c7yKJbNhYBnk/aSNnYA3C6BVQHjlVVF+JBPGqb1uJ1tXvSj0a9dwoaIXnhu6Di6kDrI/EhQR3qOdcCkW+nH5g16pkwauLOoYcjqD4jcfOomI6N4NxlbB4cjkYY/7Vpjl+qZYbryniGPEa8e+1EuimzsViZjHhYmkzLaQD2VBOjOx0XUXF+VegMV6N9ntfLho0J42LW/KrEqPhR/Y2yYMHCIoEWNBr3k8WYnUnvNW5q8HO+h3ouxOFnXEvPDnyspj6t5Es4sQWzLf4VX+mno8kjkaTDRhX1cwqSUkA9p4CdxFxeI7r6XFdcn6W4NXEfrMbSHdGhzyG2uiJdjuPDhVW9I3SmL1N1Xr0mJHVMYZIyj69oM6j7ua4GpBI41G+1tdOU7OeHEoI50OdRkVgQjot9VJb3Ddsp0sXHKwrbewsRg3yzxOoJORyBle3IgkXtwvRPon0ZxO0ZpvV3zOi53aVyc5Jsqk2vmNjr3Grr0X6GptDDT4aabFQYqBrSxNKWXeWicRvcW0tcctDY1dm5YX0B8qeQXBPK1/PT+1PdJdhyYGd8PIQ3ZzI4Fg68DbgeBH/als2POJB/hO36AH/wCk1KDc6/Y5/dcA/wA4OX/lb40sNMp0YXB5bx3j+3GpmEj6zDYtOPU9YPGJ1J/yl6CQvoKC9YPYU88KTIyNIrWjkD2ZyguqMG+9YaHU6EMLagrsPGbLx5OH2hAmExd8vXR2hEjbrSKOyr34MCp4W3VRtlbZeAnLYq2jo2qON4uOBB1DCxB3GrZsPb8DyjroVnVrCRJFV2lUbtSNZkHsONXUZSL5TQdx6M4GaCEQyz9eF0SQi0hS3ZEnBmG7MN44cy53GhHRzZ+GjiRsKT1LqGQCR2jykXBRWYhRbgLUXO40AUUqQpUD+C9sef0ooaF4L2x5/SilBVcPiOpwgOUnqS8ZA35YZGjuOZyqDaiWz9oRzRrJG4dGF1ZTcGoGJgkJxkcbhHLrIpK5gBJGoOlxvdJK5b0ZwWN2XjXWWXJBMT2st8P1hIsXUnsgjMMwI1y3rCzutpeo7NiYFljZHF1YFSO4/Q9/Oq7gtuOqZDFJJMjNExsFRzGxTrC50ANs2lzruo1szEZlB6yNzzjPZ+p+tAoMZEJMZKWHViQsGvpYRxhyDx7auPG9Vt6Wk7TNnxZFLSMM7sWYjQXY6Ko32AsB3AUahjoF0dwTysMXOCGI+xjP7pDuJH8RhvPDdzvZglTMf0uX41C0jpW5NCttbTEKiwzSMcqJe2ZvHgoGpPAd9hV70rO0bpP0kgwMRkmcDgo+8x5KONcH6b9MsTj+z+zh4Rqxue9zuJ7rfGp/TmDaOGxq46U9aobskA9SEPtQshvkBFxc3vvvfdbsP0M2ftPDpicMDDnGuQgZGHtI6Hs3B5Dz1pNTtF3enH+jmFmLj1dvt4z1kajR2yakx+8wtcpxF7XrsPSYnbGx4cTAhMsL3liUXYEIyTIF33BKuBvIHM1TNuej/HYNhND9qEIZXiB6xSNQ3V6n4E3roXRfaJxuFlxOFYQYs2WdQAV62MaM6HeCOOhtpe6i08p6rMb449sJsSsjRYVpOscqLQs6zaE2W6MCBc6308K9H4DZKwQYaWdy2IhgVJJibtIAg6wOTqy5hm11BF+d+Zz+kja2FJTEbNDPuzR9YFbvFs31oLtjpJtnaymAYYwQto/YZQQd4Z31y9yj+1X3FdVF6b7aO0MH60EASPGvFGQLFozDcFu8lfK/dVd6LteQX3dVNfw9XkvXQ+mOwFwmwupXUxPEzEDe7OA58e0fK1c42K2Xr293DznzaMoPm9Rjdpzx43SR0XnAkQN7LXRvyyqUb/mNA4kKMUbepKn+U2P0rGzMTY2PD6VJ2trM7+/Z/Nh2v82arKpuyIcO8wjxErwqdM6qGCngzIdWXnlII31adr+jLHYdRLAUxcJAYPCe1beGCHX9Japvod2xD1zYPEokkWI9kOoYLMo3WI+8ot4qvOu37I2FBhQRh06pDr1aserBOpKoTZT+W16DlPoe6aETHBTnR2YxkixSXUyREcM2rW4Nm94AdoO6qh026AwY77VD1GKWxSdBrmUgr1g+8AQNd44Gj2wcTK+HUzpkmAyyD7uddCyHije0DyIoIwpUhSoH8F7Y8/pRSheC9sef0opQBsQMuMH+JAf+BJp//Qaemw6tvAPcRpQ/H4lmxkeW2SIFJDxzTgFVHhkjJ/3q8jRasspLWuHgTJ0fgYkmJLkWJAsSDvBI1t3UH6XdE1mhzQ3SRACFXRZlQg9U67iCBYHePDSrdSqski97NYV7opHEA/Gng5rUCg3SbpRhsDHnnksT7CDWRzyVf6mwHE1KBXG4tY0Z3ICqLknhQLZsDSucRILMwsinfHHfQfmO9vIa5RXLZPSTJi8bhjIojwolymP2jduykkjcSpIYAaDXebGuzwrYVXPc9ThZSlw6sCrAEHQgi4N+YNAtk9FosHOZMKTEkh+1h3xMeDoPuMO7QjS24iyRpemscxRSVUseA5k7rngO+q6si10kPCDQltgouI9ZiASUjLJbRZ0v7MgH3hvD7x3gkVJwTTZ/tMuQqOyN6MALgH7yk31NrWHkQq8/YoSwg8BTEmzUvfUnfv3HgQN2nCn6cvpU6iN2KH6UsOBsvEqNwS/6WDf0rgHWZcPMb+0qx/qdWPyjNeifSh/9txf+6f8A5TXm7FnsonM5j5DT6mrfP+q/T2GMNHp4a1Nd8ygHhdT3XNx8/rUfAWJa5sNb23gca6IvQCV4MbEqg4zByhgLf+pw8iAoRzN0Zh/MvhozM4b0fTzYaLG7OfrkOrREhZ4ZEPaVWNlfKwJB7JtbQ12XoB0nOMhKTqYsXDZZo2Uo3JZQrAHK1vI3HC5AeiCDqw5hJOExCCaMG5MEyHq8Rh2J5HLYnUhe6ujmJSQ1hcaA2FwDvF/IUG9YYaGs1g7jQBRSpClQPYVrMCdwv9DUPaHSYBM0EbT6qob2IiXZUT7RvaBLD2A1AsPt1MbJJhESRGUgYjOoAWMi5UMpIJf2bA7ixo5tMXbDLwadf+Gjyj5xiopDuCwZjSzHMxJZ2952N2a3AXOg4Cw4VLWXnTtMyLaue7nbpmtaOBxzqLiNqwocrSoG924LnwUan4VHxWz0kN2F+4k5f03t8qh7P2esbO+RVLWACgAIi+yoA4kkse88bCo5nFnpD0kTDYd5jcKq3BIsSToqhTY3JIFjXnLa+OkxErzysWkY3JJvYcFH4RwAsKvPpZ2w8zxxqpGHS5V+EsgGpH4VVhbnmJ3WrngbMDzG+t8JdbrHOzeoL9Hth+uGeGO3XdX1sYvbrMptJGTwNmUg8weddx9Hm2zi8FGXuJovsZlIswePQlhwJFj5muJ+jrG5Np4TX94UPeJUKj/MR8K73FsoJiTiI+yZFCzDhIF9hz+NdRfiCQdwtT6+6X+c62Ox7qya1jOlaYmfIt7FjuVRvYncB/fgLmoiaepVHw3Wa5yngoPZ7iSdfGw8KkVIVZB0rFDdtbUECgKueVriOMH2iN5J4ILi58OJAIc59OvSERwpg0N5JiC4G9YwdL/mbTwBric9y7dynL320uPO/wAKK9L3xDY3EvOc8quA7AWVTplAHBRoAO6rF0i6NdVhNiT5f20XVufxPL1yX7ysrfprXGajLK7qb6TegfqRjxMK/wCzyoiyADSGQoAb8lfeDzuOIrtXRTLicPgsYNJGw6K594FQWU/lcG3K7c6N4zBRyxNFIgdGUqykXDA6EEUE6H7GbAo+FBLwB2eBjcsqubtE5O8qxJB4huYNSqk4PY3q+IklhsI5zmlj4dZa3XJyJAAYcbA7wcxqlSoFWDuNZrB3GgCilSFKgjbL2akTysqjNI2ZjbU6WF/ACn9pC0uE/wB448+ok/salwJUbbynqusUXaJllHMhD2wO8xlx51FTE6m5t1bqwIBBuDqDzB3GtJuFY5eN8TLGwoJiZDPI0CmyL+2YbzfXqVPMj2jwGg1Nw/tzaBjQBP2jnLHxANrlyPdUXPfoN5FabEw4jjsN1953sd7MTxJJJJ5k1Hzw33UfTLXUAOmGy4MRhsZA0kccyvHLhwWVTmWBFCqN+VgGXTn3VwZtn4iNi7YeZUNr3ikAtbfqOFeoMBpicR+SE/HrR/00bjfSuhg8cGYq+aNiGABVlNiCpuCCNQRv8q6f0O9MbpaPHIZF/jIO2O903N4ix7jXV+k3QTA44ZpIVWUbpEUK9/xW9te4/LfXHcb6MpoHmW4Zk+0jX+Ml+3lPG2mm8E66WJrlrXa2Nv8AHath7dw+KTrMPMsq8cp7S9zKe0p7iBRV1B/vxF+Vcm6O+jyF448THK8bsLho2KsO64N/KrrgsJi4hb1sSj/GhBP6kZfmDWHUbat9WHDwKgsot/U8STxPeadoMMbih+6gfv66RPl1TfWsS+syizMkK8RES7nwkdQAP5L8iKtykNVI2htTK3VxjrJrXy3sqA/ekb7o7t54A1BWBYVkxEz5mCl5JCLdlAWyqPuoNbL5m5JJn4DZyouVVyjed5JJ3sxOrHmTrQnp1H1sMWEGnrM0cb23iLrF663iCF/nqJOR/lzTFdFXl2QcTIv+1bRxsTrpcoksjdWPgzN4Ecq6f096PLJs0RouuGMUsemo9XtcDxjzjzqzS4CNuquukTBkHAEIyDTuDG1SWW4sa6HOSm4vWawq2AA3CkTQZpUw0xJyr5k7hT4oFWDuNZrB3GgCilSFKgnILaca2pl5LOOVqfoBWyfs8+HP7vWPvia/V/psU/kB4in55P8AXKmOkGBkkQPA2SePVDYEMDbPEwPBgB4EKeFVDpVi8bLs+YYeHrZJFKBo2ylQTlkujkMrgBlygmx8KxzxtvTXDKSdnNn49cUz4hSCtzHHyCKdWH5yM3hl5VacOmVFG7TX6mucejVXWAxSIyMrAFWUqw4biAavm1O3kgH72+buiW3WnzuE8XvwrWTU0zt2e2IuZXmO+Y5l7o1GWIea9vxc0Yh3UyBT8Y0qUHEa1NbT2ck6ZWuCDmRhoyMNzKefCx0IJBuCRTgFOxGgqOymaCV4HABJLjKLKcx1dB7rG5tqVbMCdVJO0ukGyzPGerfq5luYpLXytbcw+8h3Eee8AjluzvSs8M7YXH4RkmjbIxh7QuOIQ62IsRYnQ1hl87vptj9Jrt1cRCtggFBdldLsFiLCPEIGP3HvG/hkkANHUW9OOk8mKq2PxIOJWcglI51hGUZjaNZJJmAGp7YAI3/Ymj+2cYY4yUAMhISMcC7aLf8ACNWPcpoXjMMIIMMATaOaO7HeS+aMu3eWkue81b+q3xaIZQwDKQQRcEagg7iDxFKaUKL1X2xa4YFwyqhNzGzBVYneYixsGPu7ieRJJL4LFJiI45UvlOoupU8QQysAVIIIII4Vqyaesud3yFZiJL2Y3IBt41OocWyuT3mgzgns1udEKG4hMrXHiKlS4iyBgN9BIrB3GoJx+m7X5VIw8pZbkc6AWKVIUqCRiBmsRUdcfkZVk0DGytwDHcjcr8Dx3b7XFRYp4zre3EHjT2M2hAylXDEMLFerdwRyOVSKA+xtQXaOHMbmaIFgf2sY3tYW6xB74A1H3gOYFwWH6UdQxSRMRJEASkohkLqB+7cWzN3OBf3tdTB2n6U8NECRh8U/jF1Y/wCIQflQW6KZHUSAqy2uG4W4m/D/ALVE2SC5bEEayWyA71iX9n4Frlz+YD7tVTortSTameZYRhsKxs6ls5xBG/SwCXtZiL5gSDrYi+qtA+KkLuFRwKkLuoNgafU3qPTsRoHK5f6YuhQxCpjogRLDYS5d7xA+3p95N/hfkK6hSIuKDnOx4pYVj68JioGUZZ8imRARoJR94fiHnzqxjZEFrpHkvr9izRX/APjK1EkwrYJsqfsXJKA7kJ1MXcN5Xu04C7i48/dTXu3UDsWzYnZT104Zb2DSPcX3kdYCeG/x505itkRMMshnlBt2etmsbEEXCkDeBvpRbR5qw8r1IXHE7r/pP9ajRs3hMHBAGl6hIgoJLnKZLAXN21P+Y010L22mIw8TAMjShpQGHtZ3ZmykEg2LWI3jiBW2Mi6xSrAsDvUa5u491a4bBPCivlDFZjMY1+6rRsjKnNu0X7yWA3ipFikJtoLmh86Ne7VOgmDqGUggi4I3EHca0ngJv2j4cKCOTmj7wafwyXQA7tfrUeIdgjdc2+Gprd8VbRRQatgTfQ6VNVAFsOVQBim/0KnIDl130AcUqQpUDkkFR2wS+6PpUl3bgL+dRJp5SLKqg8yb/LSg1OAX3fnVG6e9IsGkT4ZB12IlRliVBmAYgqGLbtDwBJ0q2ybKeX9q5ce6fY/QLL8QapnSPZi//W8APdw7tbTSzkLpw30Fp6E7N9WwGHiIsVQZvzHVvnVjjXSo+HQAAcqkq1BmpCteo9Ow0DlZBrFKgcjes7vCmqzQZxWHSVCjjMp3j5+RBF7jlVffZ0kLXXtrz425MOfeKPqbU5nvvoAkUwYf041KiZOIqXJh1J3A/I1oIFHCg1Ew3KD5U6l+P/itkj5C1JqCKp6h7/unOvKN2O/8rHfyb8xsRlksCabCBlKkXBuCDqCDwNM7NXslDqY2K6kk23pqd/YZdaDEWGJAvoOXGpSwKOFOUqDTql32FbNuNZrB3GgCilSFKgnlRyrWQACt6550/wCljmYbPwbgTNYSy3/YK33V/wAQj4DXjQRfSJ6RhhM+HwgEuIAOdt6QeNvak/Dw48iM9E+zc+bGzO0k0puXY3NhwH+uFbY/o7h8Hs/FWS7dTIWdtWJynW57z86OejXCmPBwKRY9WD8bUFzjS9PAWrWPcKyWtQZrINqg7Q2tBAuaaVIl5uyqPmaqe0vSxs2K+WR5iOEUbEHwZrL86C+iXurcSCubbF9J8WKkChUgXnLIMx/lFgD5mrrhsekn7ORHtvyMrW8bGgLA0qgBu+pKA2oHqyDWq1mg3DdwrIccqbpUDjSXrSsUqB1DYUwGyyqf4gt/MlyPMqW/TW5NR5wZI26u2dWul9BnQ6AngCQVPcTQEqVMYLEiSNXXcwuL6EdxHAjcRzFP0CrB3Gs1g7jQBRSpClQS3l7JykXsbX3XtpfuvVC6L9DosB1mKxE3XTnM8kz6Il9XK38+0dfDdVvLAC/CqH6UtvJFhGGbtOCka+8zadYRyQXI77cbUALG7ZfbeI6mK8eBjYFzuacqbi/JdxC+Z5DpWx8OFXQWAAUeArkvQ7pbhsNh0gSKR5ST2Y1zF2PIDU1aDBtzFi0GHXBxH70zgP45Vuw+FBc9obehhZYy+aRzlSNO1I55BR9ToBqdKdm2LiMRE4edsMWUhRFYuhI0Z5CDcjQ2W35jTHQjoLFgM0jOZ8S4s8z77cUjH3V+Z4nQAW6g8f7a2JilxssE5aSZHKsWYsWtqrBjrZgQR41ffR7sTDsHEsf2i2ujDUeXKrt6TNlrFjcFj8uhPq8ptzuYWPnmW/evKpUuCjZlfKAy7mGhHdccO7dQFsBs2FVXLGv6RUo4SO4bIuYbjYAjwO+msBCVFyd/D+tS6DKLen0UjcTUcGn0e9BJS/Gtq0jfnW9AqVKlQKlSpUCJqD0ZmzwRtxdQ/nIM5+bGpcp0tzoR0Va2HgHKNU80GU/Q0BXZSlTMvBZWt4Oqyn/NI1EKHbMxKtJiVBGZZFzDiLwREHwP9KI0CrB3Gs1g7jQBRSpClQc92W+3JbRnCQoODyzAC3ekZY0Sg9Esc8vX7RxL4p7WCJeGFR7oAOa3mKuStbUaVv6w3vH40GuwejGEwQIw2HjivvKi7nxc3Y/GjFCfWG94/Gl6w3vH40BalQn1hvePxpesN7x+NBnpRsdcZhZsO1hnXsk/ddTmjbyYA1Qui+0Ouw639tCY5Be+VkOVhcd4q+jEN7xrkmzF9VxqhfZxCnMvAOjEF/O3+r0HUl3CtlW/Goezprrl5fSpdA71XfWOq76wklqcWS9BkXp+N70zSoJNKtY2uK2oFSJrV3tTLG9BlmvVd6NTaTJxjnmHl1zkfIirBVH2BiCNo7Sj4CdSP/chjJ+ZvQWqJck4lGhklCNyIaID4gxgg8s3OrEKA4k9qAd7v5quUfJzUj1hvePxoC1YbcaFesN7x+NIzt7x+NA0KVKlQf/Z"]
+        file_reference:
+          type: string
+          description: >-
+            The photo of the donation
+          example: "MOA.pdf"
+        donation_date:
+          type: string
+          description: >-
+            The date of the donation
+          example: "2020-05-30 09:00:00"
+        donation_items:
+          type: array
+          items:
+              type: object
+          description: >-
+            The contents inside a donation
+          example: [{
+                      "donation_type": "MDS",
+                      "weight": 50,
+                      "total_unit_value": 10,
+                      "unit": "box",
+                      "estimated_cost": 5000,
+                      "currency": "PHP",
+                      "description": "Alcohol 1Liter"
+                    }]
+        cash_donations:  
+          type: array
+          items:
+              type: object
+          description: >-
+            The cash donations
+          example: [{
+                      "amount": 1000,
+                      "currency": "PHP",
+                      "description": "alay para sa buhay"
+                   }]
+        services: 
+          type: array
+          items:
+              type: object
+          description: >-
+              The services offered
+          example: [{
+                     "service_type": "SV001",
+                      "currency": "PHP",
+                      "estimated_cost": 5000,
+                      "hours": 100,
+                      "description": "doctors",
+                      "start_date": "2020-05-30 00:00:00",
+                      "end_date": "2020-07-30 00:00:00"
+                    }]
+        rentals:
+          type: array
+          items:
+              type: object
+          description: >-
+              The rentals offered
+          example:  [{
+                      "currency": "PHP",
+                      "estimated_cost": 10000,
+                      "description": "dorms for doctors",
+                      "start_date": "2020-05-30 00:00:00",
+                      "end_date": "2020-07-30 00:00:00"
+                    }]
+
+
+    DonationRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: >-
+            The ID of the donation request
+          example: 1
+        request_type:
+          type: string
+          description: >-
+            The type of donation request
+          example: "FOR_REPORTING_ONLY"
+        donor:
+          type: object
+          description: >-
+            The one who makes the donation
+          example: {
+              "contact_person": "dctx",
+              "affiliation_org": "vlad",
+              "mobile_number": "12345",
+              "landline_number": "12345",
+              "email_address": "donor@dctx.com",
+              "sector_type": "GOV",
+              "isInternational":false,
+              "isAnonymous":false,
+              "address":{
+                  "address_line_one":  "Block1, AFPOVAI",
+                  "barangay": "Western Bicutan",
+                  "city": "Taguig",
+                  "province": "Metro Manila",
+                  "region":"Region VII",
+                  "country" : "Philippines"
+              }
+            }
+        beneficiary:
+          type: object
+          description: >-
+            The one who receives the donation
+          example: {
+              "contact_person": "dctx",
+              "affiliation_org": "vlad",
+              "mobile_number": "12345",
+              "landline_number": "12345",
+              "email_address": "donor@dctx.com",
+              "sector_type": "LGU",
+              "address":{
+                  "address_line_one":  "Jingoy Block",
+                  "barangay": "Barangay 101",
+                  "city": "San Juan",
+                  "province": "Metro Manila",
+                  "region":"Region VII",
+                  "country" : "Philippines"
+              }
+            }
+
+        donations:
+          type: object
+          description: >-
+            The donation
+          example: [{ "photo_reference": 
+                                    ["data:image/jpeg;base64,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"
+                                    ],
+                      "file_reference": "MOA.pdf",
+                      "donation_date": "2020-05-30 09:00:00",
+                      "remarks":"nice",
+                      "donation_items":[{
+                              "donation_type": "MDS",
+                              "weight": 50,
+                              "dimension":"2x2x2",
+                              "total_unit_value": 10,
+                              "unit": "box",
+                              "estimated_cost": 5000,
+                              "currency": "PHP",
+                              "description": "Alcohol 1Liter"
+                            },
+                            {
+                              "donation_type": "MDS",
+                              "weight": 50,
+                              "dimension":"2x2x2",
+                              "total_unit_value": 10,
+                              "unit": "box",
+                              "estimated_cost": 5000,
+                              "currency": "PHP",
+                              "description": "Band-aid"    
+                            }],
+                      "cash_donations":[{
+                              "amount": 1000,
+                              "currency": "PHP",
+                              "description": "alay para sa buhay"
+                        }],   
+                      "services": [{
+                              "service_type": "SV001",
+                              "currency": "PHP",
+                              "estimated_cost": 5000,
+                              "hours": 100,
+                              "description": "doctors",
+                              "start_date": "2020-05-30 00:00:00",
+                              "end_date": "2020-07-30 00:00:00"
+                      }],
+                      "rentals": [{
+                              "currency": "PHP",
+                              "estimated_cost": 10000,
+                              "description": "dorms for doctors",
+                              "start_date": "2020-05-30 00:00:00",
+                              "end_date": "2020-07-30 00:00:00"
+                      }]
+                    }]
+
+    DonationRequestRefCode:
+      type: object
+      properties:
+        ref_code:
+          type: string
+          description: >-
+            The unique reference code of the donation request
+          example: "123456"

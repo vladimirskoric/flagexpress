@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <preConditions>
+        <dbms type="postgresql"/>
+    </preConditions>
+
+    <changeSet id="create-sms-message-status-table" author="glenn">
+        <createTable tableName="sms_message_statuses">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="flag_message_status_id" type="varchar(10)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="provider_message_status_id" type="varchar(10)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="status_type" type="varchar(10)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    
+    <changeSet id="create-regions-table" author="nitz">
+        <createTable tableName="regions">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="code" type="varchar(20)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(50)"/>
+            <column name="order" type="int"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="load-initial-regions" author="nitz">
+        <loadData tableName="regions"
+                  file="data/regions-1.0.csv"
+                  relativeToChangelogFile="true"
+                  quotchar="'"
+                  separator=","
+                  usePreparedStatements="true"/>
+    </changeSet>
+        
+    <changeSet id="create-provinces-table" author="nitz">
+        <createTable tableName="provinces">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="region" type="varchar(15)"/>
+            <column name="name" type="varchar(50)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="load-initial-provinces" author="nitz">
+        <loadData tableName="provinces"
+                  file="data/provinces-1.0.csv"
+                  relativeToChangelogFile="true"
+                  quotchar="'"
+                  separator=","
+                  usePreparedStatements="true"/>
+    </changeSet>
+
+    <changeSet id="create-countries-table" author="nitz">
+        <createTable tableName="countries">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(50)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="load-initial-countries" author="nitz">
+        <loadData tableName="countries"
+                  file="data/countries-1.0.csv"
+                  relativeToChangelogFile="true"
+                  quotchar="'"
+                  separator=","
+                  usePreparedStatements="true"/>
+    </changeSet>
+
+    <changeSet id="create-municipalities-table" author="nitz">
+        <createTable tableName="municipalities">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(50)"/>
+            <column name="province" type="varchar(50)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="load-initial-municipalities" author="nitz">
+        <loadData tableName="municipalities"
+                  file="data/municipalities-1.0.csv"
+                  relativeToChangelogFile="true"
+                  quotchar="'"
+                  separator=","
+                  usePreparedStatements="true"/>
+    </changeSet>
+
+    <changeSet id="create-configuration-table" author="nitz">
+        <createTable tableName="configurations">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="key" type="varchar(20)"/>
+            <column name="value" type="varchar(100)"/>
+        </createTable>
+    </changeSet>
+
+
+    <changeSet id="load-initial-configurations" author="nitz">
+        <loadData tableName="configurations"
+                  file="data/configurations-1.0.csv"
+                  relativeToChangelogFile="true"
+                  quotchar="'"
+                  separator=","
+                  usePreparedStatements="true"/>
+    </changeSet>
+
+</databaseChangeLog>

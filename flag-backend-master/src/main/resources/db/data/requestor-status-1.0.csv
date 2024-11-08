@@ -1,0 +1,5 @@
+name,description
+GUEST,Guest has no login credentials
+PENDING,Pending verification
+ACTIVE,Verified and active
+INACTIVE,Deactivated

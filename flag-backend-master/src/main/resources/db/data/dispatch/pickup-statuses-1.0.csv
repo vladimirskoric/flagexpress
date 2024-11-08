@@ -1,0 +1,6 @@
+name,description,order
+PENDING,Pick-up schedule For Approval,1
+FOR_PICKUP,Scheduled for Pick-up,2
+ISSUES_1,Donor didn't show-up on pick-up,3
+ISSUES_2,With Issues or changes on original donation details,4
+PICKED UP,Picked-up and En route to OCD Warehouse,5
